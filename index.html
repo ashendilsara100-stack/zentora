@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -13,313 +12,98 @@
       --glass: rgba(0, 0, 0, 0.6);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    html,
-    body {
-      height: 100%;
-      background: #000;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    html, body { height: 100%; background: #000; color: #fff; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
 
     /* --- Landing Section --- */
     .landing {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; inset: 0; 
+      display: flex; align-items: center; justify-content: center;
       background-image: url('Screenshot 2025-12-17 212954.png');
-      background-size: cover;
-      background-position: center;
+      background-size: cover; background-position: center;
       z-index: 10;
     }
-
     .landing::after {
-      content: "";
-      position: absolute;
-      inset: 0;
+      content: ""; position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9));
     }
 
-    .topbar {
-      position: fixed;
-      left: 20px;
-      top: 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 30;
-    }
-
+    .topbar { position: fixed; left: 20px; top: 20px; display: flex; align-items: center; gap: 12px; z-index: 30; }
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 8px 12px;
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 10px;
+      backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    .logo img, .logo-mini { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; }
+    .logo .text .title { color: var(--gold); font-weight: 700; font-size: 14px; }
+    .logo .text .sub { font-size: 10px; opacity: 0.8; }
 
-    .logo img {
-      width: 45px;
-      height: 45px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .logo .text .title {
-      color: var(--gold);
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .logo .text .sub {
-      font-size: 10px;
-      opacity: 0.8;
-    }
-
-    /* Menu Grid */
     .menu-row {
-      position: relative;
-      z-index: 20;
-      display: flex;
-      gap: 20px;
-      width: 95%;
-      max-width: 1200px;
-      justify-content: center;
-      flex-wrap: wrap;
-      padding: 20px;
+      position: relative; z-index: 20; display: flex; gap: 20px;
+      width: 95%; max-width: 1200px; justify-content: center; flex-wrap: wrap; padding: 20px;
     }
 
     .menu-item {
-      flex: 1;
-      min-width: 280px;
-      max-width: 320px;
+      flex: 1; min-width: 250px; max-width: 300px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.4));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      border-radius: 18px;
-      padding: 15px;
-      text-align: center;
-      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px);
+      border-radius: 18px; padding: 15px; text-align: center; cursor: pointer;
       transition: 0.4s cubic-bezier(.2, .9, .3, 1);
     }
-
-    .menu-item:hover {
-      transform: translateY(-10px);
-      border-color: var(--gold);
-      background: rgba(212, 175, 55, 0.05);
-    }
-
-    .box-image {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 12px;
-    }
-
-    .menu-item h3 {
-      color: var(--gold);
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-
-    .menu-item p {
-      font-size: 12px;
-      color: #ddd;
-      line-height: 1.4;
-    }
+    .menu-item:hover { transform: translateY(-10px); border-color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+    .box-image { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
+    .menu-item h3 { color: var(--gold); margin-bottom: 8px; font-size: 1.1rem; }
+    .menu-item p { font-size: 12px; color: #ddd; line-height: 1.4; }
 
     .contact-fab {
-      position: fixed;
-      right: 25px;
-      bottom: 25px;
-      background: var(--gold);
-      color: #000;
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-weight: 700;
-      z-index: 40;
-      cursor: pointer;
+      position: fixed; right: 25px; bottom: 25px; background: var(--gold); color: #000;
+      padding: 12px 24px; border-radius: 50px; font-weight: 700; z-index: 40; cursor: pointer;
       box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
     }
 
     /* Page Structure */
-    .page {
-      position: absolute;
-      inset: 0;
-      overflow-y: auto;
-      display: none;
-      background: #060606;
-      color: #fff;
-      padding-bottom: 60px;
-      z-index: 100;
-    }
-
-    .page.active {
-      display: block;
-    }
-
+    .page { position: absolute; inset: 0; overflow-y: auto; display: none; background: #060606; color: #fff; padding-bottom: 60px; z-index: 100; }
+    .page.active { display: block; }
     .page .back {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      background: rgba(6, 6, 6, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 15px 25px;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
+      position: sticky; top: 0; width: 100%; background: rgba(6, 6, 6, 0.95);
+      backdrop-filter: blur(10px); padding: 15px 25px; z-index: 200;
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
       border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 30px auto;
-      display: flex;
-      gap: 30px;
-      padding: 0 20px;
-    }
+    .container { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; }
+    .col-left { flex: 1; }
+    .col-right { width: 350px; }
+    .panel { background: rgba(255, 255, 255, 0.04); padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
+    
+    h1 { font-size: 28px; color: var(--gold); margin-bottom: 15px; }
+    h2 { font-size: 18px; color: var(--gold); margin-bottom: 10px; border-left: 3px solid var(--gold); padding-left: 10px; }
+    p { line-height: 1.6; color: #ccc; margin-bottom: 15px; font-size: 14px; }
+    .lead { font-size: 16px; color: #fff; font-weight: 300; margin-bottom: 25px; }
+    ul { margin-left: 20px; margin-bottom: 15px; list-style: none; }
+    li { margin-bottom: 10px; color: #ccc; font-size: 14px; position: relative; padding-left: 20px; }
+    li::before { content: "•"; color: var(--gold); position: absolute; left: 0; font-weight: bold; }
+    .hero-img { width: 100%; border-radius: 15px; object-fit: cover; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
 
-    .col-left {
-      flex: 1;
-    }
+    /* Table Styling */
+    table { width:100%; border-collapse: collapse; margin-top:10px; color:#ddd; font-size:14px; }
+    table th { text-align:left; padding:10px; color:var(--gold); border-bottom:1px solid rgba(212,175,55,0.3); font-size:12px; text-transform: uppercase; }
+    table td { padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); }
 
-    .col-right {
-      width: 350px;
-    }
-
-    .panel {
-      background: rgba(255, 255, 255, 0.04);
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    h1 {
-      font-size: 28px;
-      color: var(--gold);
-      margin-bottom: 15px;
-    }
-
-    h2 {
-      font-size: 18px;
-      color: var(--gold);
-      margin-bottom: 10px;
-      border-left: 3px solid var(--gold);
-      padding-left: 10px;
-    }
-
-    p {
-      line-height: 1.6;
-      color: #ccc;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-
-    ul {
-      margin-left: 20px;
-      margin-bottom: 15px;
-    }
-
-    li {
-      margin-bottom: 8px;
-      color: #ccc;
-      font-size: 14px;
-    }
-
-    .hero-img {
-      width: 100%;
-      border-radius: 15px;
-      object-fit: cover;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    /* --- Mobile Responsive --- */
     @media (max-width: 900px) {
-      .landing {
-        align-items: flex-start;
-        padding-top: 90px;
-        overflow-y: auto;
-      }
-
-      .menu-row {
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 100px;
-      }
-
-      .menu-item {
-        width: 90%;
-        max-width: none;
-      }
-
-      .container {
-        flex-direction: column;
-      }
-
-      .col-right {
-        width: 100%;
-        order: -1;
-      }
-
-      /* Image moves to top on mobile */
-      .topbar {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        left: 0;
-      }
+      .landing { align-items: flex-start; padding-top: 90px; overflow-y: auto; }
+      .menu-row { flex-direction: column; align-items: center; padding-bottom: 100px; }
+      .menu-item { width: 90%; max-width: none; }
+      .container { flex-direction: column; }
+      .col-right { width: 100%; order: -1; }
+      .topbar { width: 100%; display: flex; justify-content: center; left: 0; }
     }
 
-    .fade {
-      animation: fadeIn 0.6s ease both;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    table th {
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 12px;
-    }
-
-    table td {
-      vertical-align: middle;
-    }
+    .fade { animation: fadeIn 0.6s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
-
 <body>
 
   <section class="landing" id="landing">
@@ -337,23 +121,190 @@
       <div class="menu-item fade" onclick="openPage('quail')">
         <img src="Quil Eggs Im1.jpg" alt="Quail Eggs" class="box-image">
         <h3>Quail Eggs</h3>
-        <p>High-nutrient quail eggs, certified for premium global markets.</p>
+        <p>Nutrient-dense, export-ready specialty eggs.</p>
       </div>
-
       <div class="menu-item fade" onclick="openPage('cinnamon')">
         <img src="cinnamon home.jpg" alt="Cinnamon" class="box-image">
         <h3>Ceylon Cinnamon</h3>
-        <p>Authentic "Cinnamomum verum" with delicate aroma and low coumarin.</p>
+        <p>Fragrant, low-coumarin "True" Cinnamon.</p>
       </div>
-
       <div class="menu-item fade" onclick="openPage('spices')">
         <img src="spice home.jpg" alt="Spices" class="box-image">
-        <h3>Sri Lankan Spices</h3>
-        <p>Pure black pepper, turmeric and exotic native spice blends.</p>
+        <h3>Native Spices</h3>
+        <p>Premium Pepper, Turmeric and native blends.</p>
+      </div>
+      <div class="menu-item fade" onclick="openPage('dryfood')">
+        <img src="dry food.jpg" alt="Dry Foods" class="box-image">
+        <h3>Dry Foods</h3>
+        <p>Coconut products, Cashews and dried fruits.</p>
       </div>
     </div>
 
     <div class="contact-fab" onclick="openPage('contact')">Contact Us</div>
+  </section>
+
+  <section id="quail" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Quail Eggs</div>
+        <div style="font-size:12px;color:#ddd">Trusted, nutrient-dense, export-ready.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Quail Eggs — Benefits & Product Details</h1>
+        <p class="lead">Nutrient-dense specialty product for gourmet, health and hospitality markets. We supply graded and cleaned eggs for global clients.</p>
+        
+        <div class="panel fade">
+          <h2>Nutritional Highlights</h2>
+          <table>
+            <tr><th>Nutrient</th><th>Impact</th></tr>
+            <tr><td><strong>Vitamins (A, B12, B2)</strong></td><td>Supporting vision, energy and metabolism.</td></tr>
+            <tr><td><strong>Minerals (Iron, Selenium)</strong></td><td>Essential for oxygen transport and antioxidant defense.</td></tr>
+            <tr><td><strong>Protein</strong></td><td>High biological-value protein for growth and recovery.</td></tr>
+          </table>
+        </div>
+
+        <div class="panel fade">
+          <h2>Health Benefits</h2>
+          <ul>
+            <li><strong>Boosts Immunity:</strong> Antioxidants support immune health.</li>
+            <li><strong>Improves Vision:</strong> Vitamin A maintains night vision.</li>
+            <li><strong>Brain Function:</strong> B12 supports concentration.</li>
+            <li><strong>Allergy Management:</strong> Studied for anti-allergenic effects.</li>
+          </ul>
+        </div>
+
+        <div class="panel fade">
+          <h2>Packaging & Export</h2>
+          <ul>
+            <li>Retail packs (10/20 eggs) in recyclable clamshells.</li>
+            <li>Bulk hygienic cartons with temperature control.</li>
+            <li>Private label & OEM options available.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="Quil Egg In.jpeg" alt="quail eggs" />
+        <div class="panel fade" style="margin-top:20px; border-color:var(--gold)">
+          <h2>Quality Assurance</h2>
+          <p>HACCP-compliant handling and lab test certificates provided on request to ensure consistent hygiene.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cinnamon" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Ceylon Cinnamon</div>
+        <div style="font-size:12px;color:#ddd">True Ceylon — fragrant, low-coumarin.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Ceylon Cinnamon — Signature Spice</h1>
+        <p class="lead">Distinct from Cassia, True Cinnamon (Cinnamomum verum) offers a delicate aroma and safety for health-conscious buyers.</p>
+        <div class="panel fade">
+          <h2>Why Choose Ceylon Cinnamon?</h2>
+          <ul>
+            <li>Authentic botanical variety with sweet-spicy notes.</li>
+            <li>Lowest coumarin content; safe for daily consumption.</li>
+            <li>Traditional hand-peeling preserves premium quality.</li>
+            <li>Traceability available for premium global buyers.</li>
+          </ul>
+        </div>
+        <div class="panel fade">
+          <h2>Primary Applications</h2>
+          <ul>
+            <li>Retail spice jars & high-end bakery.</li>
+            <li>Natural extracts and essential oil production.</li>
+            <li>Nutraceuticals and health supplements.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="ceylon-cinnamon-sticks-sri-lankan-spices-slofoodgroup-2-oz-552314.jpg" alt="cinnamon" />
+        <div class="panel fade" style="margin-top:20px">
+          <h2>Export Quality</h2>
+          <p>Moisture-controlled packing and private-label options available for EU and Middle East exports.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="spices" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Native Spices</div>
+        <div style="font-size:12px;color:#ddd">Pepper, Turmeric & native blends.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Sri Lankan Spices</h1>
+        <p class="lead">Authentic flavours sourced and processed for international buyers seeking purity and high oil content.</p>
+        <div class="panel fade">
+          <h2>Our Spice Range</h2>
+          <ul>
+            <li><strong>Black & White Pepper:</strong> Whole and ground.</li>
+            <li><strong>Turmeric:</strong> High-curcumin dried root & powder.</li>
+            <li><strong>Chilies:</strong> Dried pods, powder and flakes.</li>
+            <li><strong>Cloves & Cardamom:</strong> Hand-picked premium grades.</li>
+          </ul>
+        </div>
+        <div class="panel fade">
+          <h2>Quality & Service</h2>
+          <ul>
+            <li>Vacuum packing for freshness retention.</li>
+            <li>COA and export documentation support.</li>
+            <li>Custom spice blends for private labeling.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="Spicy-Sri-lankan-capsicum-stir-frymalu-miris-banana-peppers-islandsmile.org-4528.jpg" alt="spices" />
+      </div>
+    </div>
+  </section>
+
+  <section id="dryfood" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Dry Foods</div>
+        <div style="font-size:12px;color:#ddd">Coconut, Cashews & value-added snacks.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Dry Foods — Export Opportunities</h1>
+        <p class="lead">Focusing on high-demand Sri Lankan agricultural products with reliable supply chains and consistent quality.</p>
+        <div class="panel fade">
+          <h2>Export Candidates</h2>
+          <ul>
+            <li><strong>Coconut:</strong> Desiccated coconut & premium chips.</li>
+            <li><strong>Cashews:</strong> Whole kernels, shelled and graded.</li>
+            <li><strong>Fruits:</strong> Dried Mango, Pineapple & Banana slices.</li>
+            <li><strong>Snacks:</strong> Roasted nuts and healthy snack mixes.</li>
+          </ul>
+        </div>
+        <div class="panel fade">
+          <h2>Why Zentora?</h2>
+          <ul>
+            <li>Direct sourcing from certified farms.</li>
+            <li>Flexible packaging (Retail & Bulk).</li>
+            <li>Cold-chain logistics coordination.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="dry food.jpg" alt="dry foods" />
+      </div>
+    </div>
   </section>
 
   <section id="about" class="page">
@@ -364,11 +315,9 @@
     <div class="container">
       <div class="col-left">
         <h1>Company Overview</h1>
-        <p>Established in 2015, Zentora (Private) Limited is a premier Sri Lankan export firm. Built on the principle
-          "Loyalty fuels the future," we specialize in poultry and natural spice exports with full government
-          certification.</p>
+        <p>Established in 2015, Zentora (Private) Limited is a premier Sri Lankan export firm. Built on the principle "Loyalty fuels the future," we specialize in poultry and natural spice exports.</p>
         <div class="panel">
-          <h2>Who we are</h2>
+          <h2>Our Core Info</h2>
           <p><strong>Director:</strong> A.L.G. Sudam Pabasara<br>
             <strong>Address:</strong> 555/3/A/1, Nedungamuva, Gampaha, Sri Lanka<br>
             <strong>Phone:</strong> +94 75 439 1779
@@ -377,146 +326,6 @@
       </div>
       <div class="col-right">
         <img src="Office.png" class="hero-img">
-      </div>
-    </div>
-  </section>
-
-  <section id="quail" class="page">
-    <div class="back" onclick="goHome()">
-      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
-      <div style="margin-left:8px">
-        <div style="color:var(--gold);font-weight:700">Quail Eggs</div>
-        <div style="font-size:12px;color:#ddd">Premium, Nutrient-Dense Export Grade</div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="col-left">
-        <h1>Quail Eggs — Benefits & Product Details</h1>
-        <p class="lead">Quail eggs are a nutrient-dense specialty product with growing demand in gourmet, health, and
-          hospitality markets. We supply carefully graded, cleaned, and packed eggs for global retail and industrial
-          clients.</p>
-
-        <div class="panel fade">
-          <h2>Nutritional Highlights (Per 100g approx.)</h2>
-          <div style="overflow-x: auto;">
-            <table style="width:100%; border-collapse: collapse; margin-top:10px; color:#ddd; font-size:14px;">
-              <tr style="border-bottom:1px solid rgba(212,175,55,0.3);">
-                <th style="text-align:left; padding:10px; color:var(--gold);">Component</th>
-                <th style="text-align:left; padding:10px; color:var(--gold);">Key Benefit</th>
-              </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <td style="padding:10px;"><strong>Vitamins (A, B12, B2)</strong></td>
-                <td style="padding:10px;">Supports vision, metabolism and energy production.</td>
-              </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <td style="padding:10px;"><strong>Iron & Selenium</strong></td>
-                <td style="padding:10px;">Essential for blood health and antioxidant defense.</td>
-              </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <td style="padding:10px;"><strong>High-Value Protein</strong></td>
-                <td style="padding:10px;">Full amino acid profile for muscle recovery and growth.</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-
-        <div class="panel fade">
-          <h2>Health Benefits</h2>
-          <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top:15px;">
-            <div
-              style="background:rgba(255,255,255,0.03); padding:15px; border-radius:10px; border-left:2px solid var(--gold);">
-              <h4 style="color:var(--gold); font-size:14px; margin-bottom:5px;">Boosts Immunity</h4>
-              <p style="font-size:12px; margin:0;">Rich in antioxidants to strengthen natural defenses.</p>
-            </div>
-            <div
-              style="background:rgba(255,255,255,0.03); padding:15px; border-radius:10px; border-left:2px solid var(--gold);">
-              <h4 style="color:var(--gold); font-size:14px; margin-bottom:5px;">Brain Function</h4>
-              <p style="font-size:12px; margin:0;">B12 & Choline support neurotransmitter synthesis.</p>
-            </div>
-            <div
-              style="background:rgba(255,255,255,0.03); padding:15px; border-radius:10px; border-left:2px solid var(--gold);">
-              <h4 style="color:var(--gold); font-size:14px; margin-bottom:5px;">Skin & Hair</h4>
-              <p style="font-size:12px; margin:0;">Essential nutrients aid cellular repair and vitality.</p>
-            </div>
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-
-        <div class="panel fade">
-          <h2>Packaging & Export Options</h2>
-          <ul>
-            <li><strong>Retail:</strong> Packs of 10 or 20 in recyclable, high-strength clamshells.</li>
-            <li><strong>Bulk:</strong> Secure cartons for foodservice with chilled logistics.</li>
-            <li><strong>Branding:</strong> Custom private labeling and OEM packaging available.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-right">
-        <img class="hero-img" src="Quil Egg In.jpeg" alt="quail eggs" />
-        <div style="height:12px"></div>
-
-        <div class="panel fade" style="border: 1px dashed var(--gold);">
-          <h2 style="font-size:16px;">Quality Assurance</h2>
-          <p style="font-size:13px;">We facilitate <strong>HACCP</strong>, <strong>Phytosanitary</strong>, and
-            <strong>Lab Test Certificates</strong> for all international shipments to ensure global food safety
-            compliance.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="cinnamon" class="page">
-    <div class="back" onclick="goHome()">
-      <img src="LOGO.jpg" style="width:30px; border-radius:4px;">
-      <div><b style="color:var(--gold)">Ceylon Cinnamon</b><br><small>The Real Spice</small></div>
-    </div>
-    <div class="container">
-      <div class="col-left">
-        <h1>True Ceylon Cinnamon</h1>
-        <p>Unlike Cassia, Ceylon Cinnamon (Cinnamomum verum) is rare and provides health benefits without the risks of
-          high coumarin.</p>
-        <div class="panel">
-          <h2>Our Quality</h2>
-          <ul>
-            <li>Hand-peeled premium quills.</li>
-            <li>Delicate, sweet aroma.</li>
-            <li>Export-grade moisture control.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-right">
-        <img src="ceylon-cinnamon-sticks-sri-lankan-spices-slofoodgroup-2-oz-552314.jpg" class="hero-img">
-      </div>
-    </div>
-  </section>
-
-  <section id="spices" class="page">
-    <div class="back" onclick="goHome()">
-      <img src="LOGO.jpg" style="width:30px; border-radius:4px;">
-      <div><b style="color:var(--gold)">Sri Lankan Spices</b><br><small>Pure Flavours</small></div>
-    </div>
-    <div class="container">
-      <div class="col-left">
-        <h1>Authentic Spice Range</h1>
-        <div class="panel">
-          <h2>Export List</h2>
-          <ul>
-            <li>Black & White Pepper (Whole/Powder)</li>
-            <li>Turmeric & Red Chili</li>
-            <li>Cloves, Cardamom & Nutmeg</li>
-            <li>Custom Curry Blends</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-right">
-        <img src="Spicy-Sri-lankan-capsicum-stir-frymalu-miris-banana-peppers-islandsmile.org-4528.jpg"
-          class="hero-img">
       </div>
     </div>
   </section>
@@ -531,24 +340,20 @@
         <h1>Export Inquiries</h1>
         <div class="panel">
           <p><strong>Email:</strong> zentora@example.com</p>
-          <p><strong>WhatsApp:</strong> <a href="https://wa.me/94754391779" target="_blank"
-              style="color:var(--gold)">+94 75 439 1779</a></p>
+          <p><strong>WhatsApp:</strong> <a href="https://wa.me/94754391779" target="_blank" style="color:var(--gold)">+94 75 439 1779</a></p>
           <p><strong>Working Hours:</strong> Mon-Fri (8:30 AM - 5:30 PM)</p>
         </div>
       </div>
       <div class="col-right">
-        <img src="LOGO.jpg" class="hero-img" style="opacity: 0.5;">
+        <img src="LOGO.jpg" class="hero-img" style="opacity: 0.3;">
       </div>
     </div>
   </section>
 
   <script>
     function openPage(id) {
-      // Hide landing
       document.getElementById('landing').style.display = 'none';
-      // Hide all pages
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      // Show selected page
       const target = document.getElementById(id);
       if (target) {
         target.classList.add('active');
@@ -565,5 +370,4 @@
     }
   </script>
 </body>
-
 </html>
