@@ -16,17 +16,21 @@
     html, body { height: 100%; background: #000; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
     a { color: inherit; text-decoration: none; }
 
-    /* --- FIXED BACKGROUND LOGIC --- */
+    /* --- Landing Section --- */
+    .landing {
+      position: fixed; inset: 0; 
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+      overflow: hidden;
+    }
+
     .bg-overlay {
-      position: fixed; /* මෙන්න මෙතනින් තමයි background එක හැමවෙලේම එක තැන තියන්නේ */
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      position: fixed;
+      inset: 0;
       background-image: url('Screenshot 2025-12-17 212954.png');
       background-size: cover;
       background-position: center;
-      z-index: -1; /* Content එකට යටින් තියෙන්න */
+      z-index: -1;
       animation: kenBurns 20s infinite alternate ease-in-out;
     }
 
@@ -40,14 +44,6 @@
     @keyframes kenBurns {
       from { transform: scale(1); }
       to { transform: scale(1.1); }
-    }
-
-    /* --- Landing Section --- */
-    .landing {
-      position: fixed; inset: 0; 
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10;
-      overflow: hidden;
     }
 
     .topbar { position: fixed; left: 20px; top: 20px; display: flex; align-items: center; gap: 12px; z-index: 30; animation: slideInLeft 0.8s ease-out; }
@@ -96,13 +92,13 @@
       100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
     }
 
-    /* --- Page Structure --- */
+    /* --- Enhanced Page Structure with Zoom --- */
     .page { 
       position: fixed; 
       inset: 0; 
       overflow-y: auto; 
       display: none; 
-      background: rgba(6, 6, 6, 0.95); 
+      background: #060606; 
       color: #fff; 
       padding-bottom: 60px; 
       z-index: 1000;
@@ -165,9 +161,9 @@
 </head>
 <body>
 
-  <div class="bg-overlay"></div>
-
   <section class="landing" id="landing">
+    <div class="bg-overlay"></div>
+
     <div class="topbar">
       <div class="logo" onclick="openPage('about', this)">
         <img src="LOGO.jpg" alt="Zentora Logo" />
@@ -230,7 +226,7 @@
           <h2>Health Benefits</h2>
           <ul>
             <li><strong>Boosts Immunity:</strong> Antioxidants and selenium support immune health.</li>
-            <li><strong>Improves Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
+            <li><strong>Imප්‍රොවේස් Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
             <li><strong>Brain Function:</strong> B12 and choline support neurotransmitter synthesis.</li>
             <li><strong>Skin & Hair:</strong> Essential nutrients aid cellular repair and maintenance.</li>
             <li><strong>Allergy Management:</strong> Contains ovomucoid proteins studied for anti-allergenic effects.</li>
@@ -422,16 +418,20 @@
       const target = document.getElementById(id);
       if (!target) return;
 
+      // Get position of the clicked card/element
       const rect = element.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
+      // Set the transform origin to the center of the clicked card
       target.style.transformOrigin = `${centerX}px ${centerY}px`;
 
+      // Show and trigger animation
       target.style.display = 'block';
       setTimeout(() => {
         target.classList.add('active');
         document.body.style.overflow = 'auto';
+        // Optional: hide landing after zoom to improve performance
         setTimeout(() => {
           if(target.classList.contains('active')) {
             document.getElementById('landing').style.visibility = 'hidden';
