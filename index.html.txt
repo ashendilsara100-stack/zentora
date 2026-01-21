@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Zentora Private Limited — Cinematic Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#d4af37;
+    --black:#050505;
+    --glass: rgba(0,0,0,0.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Montserrat',sans-serif}
+  html,body{height:100%;background:#000;color:#fff;overflow:hidden}
+  a{color:inherit;text-decoration:none}
+  /* --- Landing full screen --- */
+  .landing{
+    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    background-image: url('Screenshot 2025-12-17 212954.png'); 
+    background-size:cover;background-position:center; }
+  .landing::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.75));}
+  .topbar{position:fixed;left:30px;top:26px;display:flex;align-items:center;gap:12px;z-index:30}
+  .logo{
+    display:flex;align-items:center;gap:10px;cursor:pointer;
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+    padding:8px 12px;border-radius:10px;backdrop-filter: blur(6px);
+  }
+  .logo img{width:52px;height:52px;object-fit:cover;border-radius:8px}
+  .logo .text{line-height:1}
+  .logo .text .title{color:var(--gold);font-weight:700}
+  .logo .text .sub{font-size:12px;opacity:0.9}
+  /* center menu row */
+  .menu-row{position:relative;z-index:20;display:flex;gap:34px;align-items:center;justify-content:center}
+  .menu-item{
+    min-width:260px;min-height:140px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.35));
+    border:1px solid rgba(255,255,255,0.04);backdrop-filter: blur(6px);
+    transition:transform .45s cubic-bezier(.2,.9,.3,1), box-shadow .45s;
+    cursor:pointer;padding:18px;text-align:center;
+  }
+  .menu-item:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(0,0,0,0.6)}
+  .menu-item h3{color:var(--gold);margin-bottom:8px}
+  .menu-item p{font-size:13px;color:#e6e6e6;opacity:0.95}
+  /* bottom-right contact */
+  .contact-fab{position:fixed;right:28px;bottom:28px;background:var(--gold);color:#000;padding:14px 18px;border-radius:999px;font-weight:700;z-index:40;cursor:pointer;box-shadow:0 18px 60px rgba(212,175,55,0.14)}
+  /* page sections (behave like separate pages) */
+  .page{
+    position:fixed;inset:0;overflow:auto;display:none;padding:60px 80px;background:#060606;color:#fff;
+  }
+  .page.active{display:block}
+  .page .back{position:fixed;left:34px;top:30px;z-index:160;display:flex;align-items:center;gap:10px;cursor:pointer}
+  .page .back .logo-mini{width:44px;height:44px;border-radius:8px;object-fit:cover}
+  .container{max-width:1100px;margin:100px auto 120px;display:flex;gap:28px;align-items:flex-start}
+  .col-left{flex:1}
+  .col-right{width:380px}
+  .panel{background:rgba(255,255,255,0.02);padding:22px;border-radius:12px}
+  h1{font-size:34px;color:var(--gold);margin-bottom:12px}
+  h2{font-size:20px;color:var(--gold);margin-bottom:10px}
+  p.lead{color:#ddd;line-height:1.5;margin-bottom:12px}
+  ul{margin-left:18px}
+  li{margin-bottom:10px;line-height:1.5}
+  .hero-img{width:100%;border-radius:12px;object-fit:cover}
+  /* small responsive */
+  @media (max-width:900px){
+    .menu-row{flex-direction:column;gap:18px}
+    .container{margin:80px 20px}
+    .col-right{width:100%}
+  }
+  /* subtle animations */
+  .fade{animation:fadeIn .7s ease both}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+<style>
+/* ===== INFO BOX ===== */
+.info-box{
+  width: 420px;
+  padding: 36px 30px 30px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+}
+
+/* IMAGE INSIDE BOX */
+.box-image{
+  width: 400px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+/* TITLE */
+.info-box h2{
+  color: #d4af37;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+/* TEXT */
+.info-box p{
+  color: #eee;
+  font-size: 14px;
+  line-height: 1.6;
+}
+</style>
+
+</style>
+</head>
+<body>
+
+<!-- Landing / cinematic full screen -->
+<section class="landing" id="landing">
+  <!-- Top-left logo -->
+  <div class="topbar">
+    <div class="logo" onclick="openPage('about')">
+      <img src="LOGO.jpg" alt="Zentora Logo" />
+      <div class="text">
+        <div class="title">Zentora Private Limited</div>
+        <div class="sub">Premium Natural Exports — Sri Lanka</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- main center row with 3 items -->
+  <div class="menu-row" style="z-index:18">
+    <div class="menu-item fade" onclick="openPage('quail')">
+     <img src="Quil Eggs Im1.jpg" alt="Quail Eggs" class="box-image">
+      
+      <h3>Quail Eggs</h3>
+      <p>High-nutrient quail eggs, packed & certified for export — detailed benefits, nutrition & packaging.</p>
+    </div>
+
+    <div class="menu-item fade" onclick="openPage('cinnamon')">
+ <img src="cinnamon home.jpg" alt="Quail Eggs" class="box-image">
+
+      <h3>Ceylon Cinnamon</h3>
+      <p>True Ceylon cinnamon — delicate aroma & premium flavour. Traceable & export-ready.</p>
+    </div>
+
+    <div class="menu-item fade" onclick="openPage('spices')">
+  <img src="spice home.jpg" alt="Quail Eggs" class="box-image">
+
+      <h3>Spices</h3>
+      <p>Black pepper, turmeric, chilies & native spice blends — sourced, cleaned, and packaged to export standards.</p>
+    </div>
+  </div>
+
+  <!-- bottom-right contact (fourth option) -->
+  <div class="contact-fab" onclick="openPage('contact')" title="Contact Us">
+    Contact Us
+  </div>
+</section>
+
+<!-- ABOUT / Logo click page -->
+<section id="about" class="page">
+  <div class="back" onclick="goHome()">
+    <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+    <div>
+      <div style="color:var(--gold);font-weight:700">Zentora Private Limited</div>
+      <div style="font-size:12px;color:#ddd">Back to home</div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="col-left">
+      <h1>Zentora (Private) Limited – Company Overview</h1>
+      <p class="lead">
+Zentora (Private) Limited is a government-registered poultry company in Sri Lanka, established in 2015 and built on trust, quality, and long-term relationships. Guided by our principle, “Loyalty fuels the future,” we proudly serve both local and international markets with a balanced approach that is professional yet accessible.
+We specialize in the poultry industry, focusing on quails, quail eggs, broiler chickens, country chicks, and turkeys. Our operations are fully integrated, covering farming, processing, quality inspection, packaging, labeling, and exporting. This end-to-end capability allows us to maintain consistent standards, product safety, and reliability at every stage.
+Zentora (Private) Limited operates in full compliance with government regulations and follows strict hygienic, veterinary, and food safety standards. We provide all required certifications and support refrigerated and cold-chain handling to ensure freshness and quality. To meet diverse customer needs, we offer custom packaging, private labeling, and export-grade packing tailored to specific market requirements.
+With a vision to serve markets around the globe, Zentora (Private) Limited warmly welcomes partnerships, inquiries, and long-term collaborations.</p>
+
+      <div class="panel fade">
+        <h2>Who we are</h2>
+        <p><strong>Director:</strong> A.L.G. Sudam Pabasara<br>
+            <strong></strong><br>       
+           <strong>Address:</strong> 555/3/A/1, Nedungamuva, Gampaha, Sri Lanka<br>
+            <strong></strong><br>     
+           <strong>Phone Number:</strong> +94 75 439 1779<br>
+            <strong></strong><br>     
+           <strong>Core business:</strong> Farming, processing and exporting quail eggs; sourcing and processing Ceylon cinnamon; sourcing and packing Sri Lankan spices and dry food products for international markets.</p>
+      </div>
+
+      <div style="height:18px"></div>
+
+      <div class="panel fade">
+        <h2>Vision</h2>
+        <p>To be the world’s trusted supplier of premium Sri Lankan natural products — celebrated for authenticity, consistent quality, and ethical sourcing.</p>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Mission</h2>
+        <ul>
+          <li>Deliver export-grade products with complete traceability and food-safety compliance.</li>
+          <li>Support smallholder farmers through fair partnerships and capacity building.</li>
+          <li>Innovate packaging and product formats to match global retail and foodservice needs.</li>
+        </ul>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Future Plans</h2>
+        <ul>
+          <li>Scale HACCP-ready processing lines for spices and quail eggs (12–24 months).</li>
+          <li>Private-label offerings for retailers in EU, Middle East and Japan.</li>
+          <li>Investment in value-added products: spice blends, freeze-dried fruits and premium quail egg packs.</li>
+          <li>Digital traceability system so buyers can view origin & quality certificates.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <img class="hero-img" src="Office.png" alt="company" />
+      <div style="height:12px"></div>
+      <div class="panel fade">
+        <h2>Brand Values</h2>
+        <ul>
+          <li>Loyalty & Trust — transparent trade practices</li>
+          <li>Premium Quality — consistent product standards</li>
+          <li>Sustainability — protecting soil, trees and smallholder livelihoods</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUAIL EGGS page -->
+<section id="quail" class="page">
+  <div class="back" onclick="goHome()">
+    <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+    <div style="margin-left:8px">
+      <div style="color:var(--gold);font-weight:700">Quail Eggs</div>
+      <div style="font-size:12px;color:#ddd">Trusted, nutrient-dense, export-ready.</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="col-left">
+      <h1>Quail Eggs — Benefits & Product Details</h1>
+      <p class="lead">Quail eggs are a nutrient-dense specialty product with growing demand in gourmet, health and hospitality markets. We supply carefully graded, cleaned and packed quail eggs for retail, foodservice and industrial clients.</p>
+
+      <div class="panel fade">
+        <h2>Nutritional Highlights (pointwise)</h2>
+        <ul>
+          <li><strong>Vitamins:</strong> rich in Vitamin A, B12, Riboflavin (B2), Niacin, and Pantothenic acid — supporting vision, energy and metabolism.</li>
+          <li><strong>Minerals:</strong> Iron, Phosphorus, Selenium — essential for oxygen transport, bone health and antioxidant defence.</li>
+          <li><strong>Protein:</strong> High biological-value protein with a balanced essential amino-acid profile — ideal for growth and recovery diets.</li>
+          <li><strong>Fats:</strong> Beneficial fatty acids in small quantities; overall low per-serving caloric load compared to alternatives.</li>
+        </ul>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Health Benefits (each with supportive image)</h2>
+        <ul>
+          <li><strong>Boosts Immunity:</strong> antioxidants & selenium support immune health.</li>
+          <li><strong>Improves Vision:</strong> vitamin A helps maintain photoreceptor function and night vision.</li>
+          <li><strong>Supports Brain Function:</strong> B12 and choline support neurotransmitter synthesis and concentration.</li>
+          <li><strong>Skin & Hair:</strong> nutrients aid cellular repair, maintaining skin and hair health.</li>
+          <li><strong>May Assist Allergy Management:</strong> contains ovomucoid proteins studied for anti-allergenic effects (consult physician for allergies).</li>
+        </ul>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Packaging & Export Options</h2>
+        <ul>
+          <li>Retail packs (packs of 10 in recyclable clamshells), chilled chain logistics for regional exports.</li>
+          <li>Bulk packaging for foodservice — hygienic cartons with temperature control.</li>
+          <li>Private label and OEM packaging available for large buyers.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="col-right">
+      <img class="hero-img" src="Quil Egg In.jpeg" alt="quail eggs" />
+      <div style="height:12px"></div>
+      <div class="panel fade">
+        <h2>Quality & Certifications</h2>
+        <p>We can facilitate HACCP-compliant handling, phytosanitary documentation, and lab test certificates on request. Quality checks at source and pack-house ensure consistent sizing and hygiene.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CINNAMON page -->
+<section id="cinnamon" class="page">
+  <div class="back" onclick="goHome()">
+    <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+    <div style="margin-left:8px">
+      <div style="color:var(--gold);font-weight:700">Ceylon Cinnamon</div>
+      <div style="font-size:12px;color:#ddd">True Ceylon — fragrant, low-coumarin, premium.</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="col-left">
+      <h1>Ceylon Cinnamon — Sri Lanka's Signature Spice</h1>
+      <p class="lead">Ceylon (Cinnamomum verum) is distinct from cassia: it delivers a delicate, multi-layered aroma and lower coumarin levels — making it the premium choice for food manufacturers, specialty bakers and health-conscious buyers.</p>
+
+      <div class="panel fade">
+        <h2>Why Sri Lankan Cinnamon is Unique</h2>
+        <ul>
+          <li>Authentic botanical variety (Cinnamomum verum) with delicate sweet-spicy notes.</li>
+          <li>Low coumarin content compared to cassia; preferred for food & nutraceutical use.</li>
+          <li>Smallholder cultivation with traditional processing yields premium quills.</li>
+          <li>Traceability is available — batch-level origin data for premium buyers.</li>
+        </ul>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Applications</h2>
+        <ul>
+          <li>Retail spice jars and sachets</li>
+          <li>Food manufacturing (bakery, confectionery)</li>
+          <li>Essential oils and natural extracts</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <img class="hero-img" src="ceylon-cinnamon-sticks-sri-lankan-spices-slofoodgroup-2-oz-552314.jpg" alt="cinnamon" />
+      <div style="height:12px"></div>
+      <div class="panel fade">
+        <h2>Packaging & Quality</h2>
+        <p>Hand-graded quills, moisture-controlled packing, and private-label options for bulk or retail buyers. We support regulatory documentation for EU and Middle East exports.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPICES page -->
+<section id="spices" class="page">
+  <div class="back" onclick="goHome()">
+    <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+    <div style="margin-left:8px">
+      <div style="color:var(--gold);font-weight:700">Spices</div>
+      <div style="font-size:12px;color:#ddd">Pepper, chilies, turmeric, curry leaves & more.</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="col-left">
+      <h1>Sri Lankan Spices — Range & Export Readiness</h1>
+      <p class="lead">We source and process a wide range of spices suited for international buyers seeking authentic Sri Lankan flavours.</p>
+
+      <div class="panel fade">
+        <h2>Product Range</h2>
+        <ul>
+          <li>Black pepper (whole & ground), white pepper</li>
+          <li>Turmeric (dried root & powder)</li>
+          <li>Dried red chilies, chili powder and flakes</li>
+          <li>Cloves, cardamom, fenugreek, curry leaves (dried)</li>
+          <li>Custom spice blends and private-label mixes</li>
+        </ul>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Quality & Service</h2>
+        <ul>
+          <li>Hygienic cleaning, grading and vacuum packing</li>
+          <li>Bulk & retail packaging with traceability</li>
+          <li>Samples, COA and export documentation available</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <img class="hero-img" src="Spicy-Sri-lankan-capsicum-stir-frymalu-miris-banana-peppers-islandsmile.org-4528.jpg" alt="spices" />
+      <div style="height:12px"></div>
+      <div class="panel fade">
+        <h2>Markets</h2>
+        <p>Primary markets: Europe, Middle East, Japan and specialty retailers in North America. We match buyer specs for quality and packaging.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DRY FOODS page -->
+<section id="dryfood" class="page">
+  <div class="back" onclick="goHome()">
+    <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+    <div style="margin-left:8px">
+      <div style="color:var(--gold);font-weight:700">Dry Foods</div>
+      <div style="font-size:12px;color:#ddd">Export-ready dry goods & value-added snacks.</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="col-left">
+      <h1>Dry Foods — Export Opportunities</h1>
+      <p class="lead">Sri Lanka’s agricultural diversity supports a wide range of dry foods with export potential. We focus on products with strong international demand and reliable supply chains.</p>
+
+      <div class="panel fade">
+        <h2>Top export candidates</h2>
+        <ul>
+          <li>Desiccated coconut & coconut chips</li>
+          <li>Cashew kernels (shelled & graded)</li>
+          <li>Dried mango, pineapple & banana (sliced / freeze-dried)</li>
+          <li>Pulses & lentils for retail/processing</li>
+          <li>Packaged roasted nuts and healthy snack mixes</li>
+        </ul>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Services</h2>
+        <ul>
+          <li>Custom packaging (retail & bulk), private label</li>
+          <li>Export document handling and cold-chain logistics coordination</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <img class="hero-img" src="dry food.jpg"dry foods" />
+      <div style="height:12px"></div>
+      <div class="panel fade">
+        <h2>Why buy from us?</h2>
+        <p>Direct sourcing, consistent quality checks, and flexible packaging options — designed for distributors, retailers and specialty importers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT page -->
+<section id="contact" class="page">
+  <div class="back" onclick="goHome()">
+    <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+    <div style="margin-left:8px">
+      <div style="color:var(--gold);font-weight:700">Contact Us</div>
+      <div style="font-size:12px;color:#ddd">Get export quotes & product samples.</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="col-left">
+      <h1>Contact Zentora</h1>
+      <p class="lead">For price lists, sample requests and export quotations, contact our export team. Provide product, quantity and destination country for a fast quote.</p>
+
+      <div class="panel fade">
+        <h2>Contact details</h2>
+        <p><strong>Email:</strong> <a href="mailto:zentora@example.com">zentora@example.com</a><br>
+           <strong>Phone:</strong> <a href="tel:+94712345678">+94 71 234 5678</a><br>
+           <strong>WhatsApp:</strong> <a href="https://wa.me/94712345678" target="_blank">Chat on WhatsApp</a><br>
+           <strong>Address:</strong> 555/3/A/1, Nedungamuva, Gampaha, Sri Lanka</p>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel fade">
+        <h2>Request a Quote</h2>
+        <p class="micro">(Copy & paste this in WhatsApp or email) — Product:, Quantity:, Packaging:, Destination:, Preferred Incoterm:, Required documents (COA/HACCP):</p>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <img class="hero-img" src="LOGO.jpg" alt="contact" />
+      <div style="height:12px"></div>
+      <div class="panel fade">
+        <h2>Working hours</h2>
+        <p>Mon — Fri: 8:30 AM — 5:30 PM (SLT)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Simple navigation
+  function openPage(id){
+    // hide landing
+    document.getElementById('landing').style.display = 'none';
+    // hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // show selected
+    const el = document.getElementById(id);
+    if(el) el.classList.add('active');
+    // allow scrolling inside shown page
+    document.body.style.overflow = 'auto';
+  }
+  function goHome(){
+    // hide pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // show landing
+    document.getElementById('landing').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // Close landing to deep link if needed (check hash)
+  (function(){
+    const hash = location.hash.replace('#','');
+    if(hash){
+      // if user opens with #quail etc
+      setTimeout(()=> openPage(hash), 250);
+    }
+  })();
+</script>
+</body>
+</html>
