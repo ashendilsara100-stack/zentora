@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
   <title>Zentora Private Limited — Premium Exports</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
@@ -10,57 +10,39 @@
       --gold: #d4af37;
       --black: #050505;
       --glass: rgba(0, 0, 0, 0.6);
-      /* Dynamic height variable for mobile */
-      --vh: 100vh;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-    
-    html, body { 
-      height: var(--vh); 
-      background: #000; 
-      color: #fff; 
-      overflow-x: hidden; 
-      scroll-behavior: smooth; 
-    }
-    
+    html, body { height: 100%; background: #000; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
     a { color: inherit; text-decoration: none; }
 
-    /* --- Landing Section --- */
-    .landing {
-      position: fixed; 
-      top: 0; left: 0; width: 100%;
-      height: var(--vh); 
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10;
-      overflow: hidden;
-    }
-
-    /* Fixed background logic to stop mobile jumping */
-    .bg-overlay {
-      position: absolute;
-      inset: 0;
+    /* --- FIXED BACKGROUND LOGIC --- */
+    .fixed-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background-image: url('Screenshot 2025-12-17 212954.png');
       background-size: cover;
       background-position: center;
       z-index: -1;
-      /* Prevent flickering */
       transform: translateZ(0);
       will-change: transform;
     }
 
-    /* Animation layer separated to prevent scale conflict with height fix */
-    .bg-overlay::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: inherit;
-        background-size: cover;
-        background-position: center;
-        animation: kenBurns 20s infinite alternate ease-in-out;
+    /* Ken Burns Animation Overlay */
+    .fixed-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      background-size: cover;
+      background-position: center;
+      animation: kenBurns 20s infinite alternate ease-in-out;
     }
 
-    .bg-overlay::after {
+    .fixed-bg::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -71,6 +53,14 @@
     @keyframes kenBurns {
       from { transform: scale(1); }
       to { transform: scale(1.1); }
+    }
+
+    /* --- Landing Section --- */
+    .landing {
+      position: fixed; inset: 0; 
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+      overflow: hidden;
     }
 
     .topbar { position: fixed; left: 20px; top: 20px; display: flex; align-items: center; gap: 12px; z-index: 30; animation: slideInLeft 0.8s ease-out; }
@@ -121,18 +111,41 @@
 
     /* --- Page Structure --- */
     .page { 
-      position: fixed; inset: 0; overflow-y: auto; display: none; 
-      background: #060606; color: #fff; padding-bottom: 60px; z-index: 1000;
-      transform: scale(0); opacity: 0;
+      position: fixed; 
+      inset: 0; 
+      overflow-y: auto; 
+      display: none; 
+      background: rgba(6, 6, 6, 0.95); 
+      color: #fff; 
+      padding-bottom: 60px; 
+      z-index: 1000;
+      transform: scale(0);
+      opacity: 0;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
     }
-    .page.active { display: block; transform: scale(1); opacity: 1; }
-    .page .back { position: sticky; top: 0; width: 100%; background: rgba(6, 6, 6, 0.95); backdrop-filter: blur(10px); padding: 15px 25px; z-index: 200; display: flex; align-items: center; gap: 12px; cursor: pointer; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+    
+    .page.active { 
+      display: block; 
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .page .back {
+      position: sticky; top: 0; width: 100%; background: rgba(6, 6, 6, 0.95);
+      backdrop-filter: blur(10px); padding: 15px 25px; z-index: 200;
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
 
     .container { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; }
     .col-left { flex: 1; }
     .col-right { width: 350px; }
-    .panel { background: rgba(255, 255, 255, 0.04); padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05); animation: fadeIn 0.8s ease both; }
+    
+    .panel { 
+      background: rgba(255, 255, 255, 0.04); padding: 20px; border-radius: 15px; 
+      margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
+      animation: fadeIn 0.8s ease both;
+    }
     
     h1 { font-size: 28px; color: var(--gold); margin-bottom: 15px; }
     h2 { font-size: 18px; color: var(--gold); margin-bottom: 10px; border-left: 3px solid var(--gold); padding-left: 10px; }
@@ -165,9 +178,9 @@
 </head>
 <body>
 
-  <section class="landing" id="landing">
-    <div class="bg-overlay"></div>
+  <div class="fixed-bg"></div>
 
+  <section class="landing" id="landing">
     <div class="topbar">
       <div class="logo" onclick="openPage('about', this)">
         <img src="LOGO.jpg" alt="Zentora Logo" />
@@ -230,27 +243,18 @@
           <h2>Health Benefits</h2>
           <ul>
             <li><strong>Boosts Immunity:</strong> Antioxidants and selenium support immune health.</li>
-            <li><strong>Imප්‍රොවේස් Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
+            <li><strong>Improves Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
             <li><strong>Brain Function:</strong> B12 and choline support neurotransmitter synthesis.</li>
             <li><strong>Skin & Hair:</strong> Essential nutrients aid cellular repair and maintenance.</li>
             <li><strong>Allergy Management:</strong> Contains ovomucoid proteins studied for anti-allergenic effects.</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <h2>Packaging & Export Options</h2>
-          <ul>
-            <li>Retail packs (packs of 10) in recyclable clamshells.</li>
-            <li>Bulk packaging for foodservice — hygienic cartons with temperature control.</li>
-            <li>Private label and OEM packaging available for large buyers.</li>
-            <li>Chilled chain logistics coordination for regional exports.</li>
           </ul>
         </div>
       </div>
       <div class="col-right">
         <img class="hero-img" src="Quil Egg In.jpeg" alt="quail eggs" />
         <div class="panel" style="margin-top:20px; border-color:var(--gold)">
-          <h2>Quality & Certifications</h2>
-          <p>We facilitate HACCP-compliant handling, phytosanitary documentation, and lab test certificates on request. Consistent sizing and hygiene ensured.</p>
+          <h2>Quality</h2>
+          <p>We facilitate HACCP-compliant handling and phytosanitary documentation. Consistent sizing ensured.</p>
         </div>
       </div>
     </div>
@@ -267,30 +271,18 @@
     <div class="container">
       <div class="col-left">
         <h1>Ceylon Cinnamon — Signature Spice</h1>
-        <p class="lead">Ceylon (Cinnamomum verum) is distinct from cassia: it delivers a delicate aroma and lower coumarin levels — making it the premium choice for health-conscious buyers.</p>
+        <p class="lead">Ceylon (Cinnamomum verum) delivers a delicate aroma and lower coumarin levels — making it the premium choice.</p>
         <div class="panel">
           <h2>Why Choose Ceylon?</h2>
           <ul>
-            <li>Authentic botanical variety (Cinnamomum verum) with sweet-spicy notes.</li>
-            <li>Lowest coumarin content; preferred for food & nutraceutical use.</li>
-            <li>Smallholder cultivation with traditional hand-peeling processing.</li>
-            <li>Traceability available with batch-level origin data.</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <h2>Applications</h2>
-          <ul>
-            <li>Retail spice jars and premium bakery/confectionery.</li>
-            <li>Essential oils, natural extracts and wellness products.</li>
+            <li>Authentic botanical variety with sweet-spicy notes.</li>
+            <li>Lowest coumarin content; preferred for wellness use.</li>
+            <li>Traditional hand-peeling processing.</li>
           </ul>
         </div>
       </div>
       <div class="col-right">
         <img class="hero-img" src="ceylon-cinnamon-sticks-sri-lankan-spices-slofoodgroup-2-oz-552314.jpg" alt="cinnamon" />
-        <div class="panel" style="margin-top:20px">
-          <h2>Packaging & Quality</h2>
-          <p>Hand-graded quills and moisture-controlled packing. We support regulatory documentation for EU and Middle East exports.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -305,32 +297,19 @@
     </div>
     <div class="container">
       <div class="col-left">
-        <h1>Sri Lankan Spices — Export Range</h1>
-        <p class="lead">Authentic Sri Lankan flavours sourced and processed for international buyers seeking purity and potency.</p>
+        <h1>Sri Lankan Spices</h1>
+        <p class="lead">Authentic Sri Lankan flavours processed for international buyers.</p>
         <div class="panel">
           <h2>Product Range</h2>
           <ul>
-            <li><strong>Pepper:</strong> Black pepper (whole & ground) and White pepper.</li>
-            <li><strong>Turmeric:</strong> Dried root and high-curcumin powder.</li>
-            <li><strong>Chilies:</strong> Dried red pods, powder and chili flakes.</li>
-            <li><strong>Others:</strong> Cloves, Cardamom, Fenugreek and dried Curry Leaves.</li>
-            <li>Custom spice blends and private-label mixes available.</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <h2>Quality & Service</h2>
-          <ul>
-            <li>Hygienic cleaning, grading and vacuum packing.</li>
-            <li>COA, samples and full export documentation support.</li>
+            <li><strong>Pepper:</strong> Black pepper and White pepper.</li>
+            <li><strong>Turmeric:</strong> High-curcumin powder.</li>
+            <li><strong>Others:</strong> Cloves, Cardamom and Curry Leaves.</li>
           </ul>
         </div>
       </div>
       <div class="col-right">
         <img class="hero-img" src="Spicy-Sri-lankan-capsicum-stir-frymalu-miris-banana-peppers-islandsmile.org-4528.jpg" alt="spices" />
-        <div class="panel" style="margin-top:20px">
-          <h2>Markets</h2>
-          <p>We serve Europe, Middle East, Japan and North America, matching specific buyer quality specs.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -345,31 +324,18 @@
     </div>
     <div class="container">
       <div class="col-left">
-        <h1>Dry Foods — Export Opportunities</h1>
-        <p class="lead">Sri Lanka’s agricultural diversity supports a wide range of dry foods with high international demand.</p>
+        <h1>Dry Foods</h1>
         <div class="panel">
           <h2>Top Export Candidates</h2>
           <ul>
-            <li><strong>Coconut:</strong> Desiccated coconut and premium coconut chips.</li>
-            <li><strong>Cashews:</strong> Whole kernels, shelled, graded and roasted options.</li>
-            <li><strong>Fruits:</strong> Sliced or freeze-dried Mango, Pineapple and Banana.</li>
-            <li><strong>Snacks:</strong> Roasted nuts and healthy packaged snack mixes.</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <h2>Services</h2>
-          <ul>
-            <li>Custom retail and bulk packaging (Private Label).</li>
-            <li>Expert export document handling and logistics coordination.</li>
+            <li><strong>Coconut:</strong> Desiccated coconut and chips.</li>
+            <li><strong>Cashews:</strong> Graded and roasted options.</li>
+            <li><strong>Fruits:</strong> Dried Mango and Pineapple.</li>
           </ul>
         </div>
       </div>
       <div class="col-right">
         <img class="hero-img" src="dry food.jpg" alt="dry foods" />
-        <div class="panel" style="margin-top:20px">
-          <h2>Why Zentora?</h2>
-          <p>Direct sourcing and consistent quality checks designed for distributors and specialty importers.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -406,7 +372,7 @@
       <div class="col-left">
         <h1>Export Inquiries</h1>
         <div class="panel">
-          <p><strong>Email:</strong> zentora@example.com</p>
+          <p><strong>Email:</strong> info@zentora.com</p>
           <p><strong>WhatsApp:</strong> <a href="https://wa.me/94754391779" target="_blank" style="color:var(--gold)">+94 75 439 1779</a></p>
           <p><strong>Working Hours:</strong> Mon-Fri (8:30 AM - 5:30 PM)</p>
         </div>
@@ -418,18 +384,6 @@
   </section>
 
   <script>
-    // --- HEIGHT FIX SCRIPT ---
-    function updateHeight() {
-      // Calculate real viewport height
-      let vh = window.innerHeight + "px";
-      document.documentElement.style.setProperty('--vh', vh);
-    }
-
-    // Initial call & listeners
-    window.addEventListener('resize', updateHeight);
-    window.addEventListener('orientationchange', updateHeight);
-    updateHeight();
-
     function openPage(id, element) {
       const target = document.getElementById(id);
       if (!target) return;
@@ -443,7 +397,7 @@
       target.style.display = 'block';
       setTimeout(() => {
         target.classList.add('active');
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = 'hidden'; // Keep body fixed when page open
         setTimeout(() => {
           if(target.classList.contains('active')) {
             document.getElementById('landing').style.visibility = 'hidden';
