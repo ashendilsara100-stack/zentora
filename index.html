@@ -40,6 +40,7 @@
       background-size: cover;
       background-position: center;
       animation: kenBurns 20s infinite alternate ease-in-out;
+      /* z-index එක ඉවත් කර පින්තූරය පෙනෙන සේ සකස් කළා */
     }
 
     .fixed-bg::after {
@@ -47,7 +48,7 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9));
-      z-index: 1;
+      /* z-index: 1 ඉවත් කළා, එවිට පින්තූරයට යටින් overlay එක නොගොස් පින්තූරය මත පෙනේ */
     }
 
     @keyframes kenBurns {
