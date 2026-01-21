@@ -21,21 +21,19 @@
       position: fixed; inset: 0; 
       display: flex; align-items: center; justify-content: center;
       z-index: 10;
-      overflow: hidden; /* පින්තූරය zoom වෙද්දී එළියට නොපෙනීම සඳහා */
+      overflow: hidden;
     }
 
-    /* පසුබිම් පින්තූරය සහ Animation එක සඳහා වෙනම div එකක් */
     .bg-overlay {
       position: absolute;
       inset: 0;
       background-image: url('Screenshot 2025-12-17 212954.png');
       background-size: cover;
       background-position: center;
-      z-index: -1; /* අකුරු වලට යටින් තියෙන්න */
+      z-index: -1;
       animation: kenBurns 20s infinite alternate ease-in-out;
     }
 
-    /* පින්තූරයට උඩින් තියෙන කළු පැහැති gradient එක */
     .bg-overlay::after {
       content: "";
       position: absolute;
@@ -94,17 +92,33 @@
       100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
     }
 
-    /* Page Structure */
-    .page { position: absolute; inset: 0; overflow-y: auto; display: none; background: #060606; color: #fff; padding-bottom: 60px; z-index: 100; }
-    .page.active { display: block; }
+    /* --- Enhanced Page Structure with Zoom --- */
+    .page { 
+      position: fixed; 
+      inset: 0; 
+      overflow-y: auto; 
+      display: none; 
+      background: #060606; 
+      color: #fff; 
+      padding-bottom: 60px; 
+      z-index: 1000;
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    }
+    
+    .page.active { 
+      display: block; 
+      transform: scale(1);
+      opacity: 1;
+    }
+
     .page .back {
       position: sticky; top: 0; width: 100%; background: rgba(6, 6, 6, 0.95);
       backdrop-filter: blur(10px); padding: 15px 25px; z-index: 200;
       display: flex; align-items: center; gap: 12px; cursor: pointer;
       border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-      animation: slideDown 0.5s ease-out;
     }
-    @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
 
     .container { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; }
     .col-left { flex: 1; }
@@ -128,7 +142,6 @@
     .hero-img { width: 100%; border-radius: 15px; object-fit: cover; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: 0.8s cubic-bezier(0.2, 0.9, 0.3, 1); }
     .hero-img:hover { transform: scale(1.03); }
 
-    /* Table Styling */
     table { width:100%; border-collapse: collapse; margin-top:10px; color:#ddd; font-size:14px; }
     table th { text-align:left; padding:10px; color:var(--gold); border-bottom:1px solid rgba(212,175,55,0.3); font-size:12px; text-transform: uppercase; }
     table td { padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); }
@@ -152,7 +165,7 @@
     <div class="bg-overlay"></div>
 
     <div class="topbar">
-      <div class="logo" onclick="openPage('about')">
+      <div class="logo" onclick="openPage('about', this)">
         <img src="LOGO.jpg" alt="Zentora Logo" />
         <div class="text">
           <div class="title">Zentora Private Limited</div>
@@ -162,29 +175,29 @@
     </div>
 
     <div class="menu-row">
-      <div class="menu-item fade" style="animation-delay: 0.1s" onclick="openPage('quail')">
+      <div class="menu-item fade" style="animation-delay: 0.1s" onclick="openPage('quail', this)">
         <img src="Quil Eggs Im1.jpg" alt="Quail Eggs" class="box-image">
         <h3>Quail Eggs</h3>
         <p>Nutrient-dense, export-ready specialty eggs.</p>
       </div>
-      <div class="menu-item fade" style="animation-delay: 0.2s" onclick="openPage('cinnamon')">
+      <div class="menu-item fade" style="animation-delay: 0.2s" onclick="openPage('cinnamon', this)">
         <img src="cinnamon home.jpg" alt="Cinnamon" class="box-image">
         <h3>Ceylon Cinnamon</h3>
         <p>Fragrant, low-coumarin "True" Cinnamon.</p>
       </div>
-      <div class="menu-item fade" style="animation-delay: 0.3s" onclick="openPage('spices')">
+      <div class="menu-item fade" style="animation-delay: 0.3s" onclick="openPage('spices', this)">
         <img src="spice home.jpg" alt="Spices" class="box-image">
         <h3>Native Spices</h3>
         <p>Premium Pepper, Turmeric and native blends.</p>
       </div>
-      <div class="menu-item fade" style="animation-delay: 0.4s" onclick="openPage('dryfood')">
+      <div class="menu-item fade" style="animation-delay: 0.4s" onclick="openPage('dryfood', this)">
         <img src="dry food.jpg" alt="Dry Foods" class="box-image">
         <h3>Dry Foods</h3>
         <p>Coconut products, Cashews and dried fruits.</p>
       </div>
     </div>
 
-    <div class="contact-fab" onclick="openPage('contact')">Contact Us</div>
+    <div class="contact-fab" onclick="openPage('contact', this)">Contact Us</div>
   </section>
 
   <section id="quail" class="page">
@@ -199,7 +212,6 @@
       <div class="col-left">
         <h1>Quail Eggs — Benefits & Product Details</h1>
         <p class="lead">Quail eggs are a nutrient-dense specialty product with growing demand in gourmet, health and hospitality markets. We supply carefully graded, cleaned and packed eggs for global clients.</p>
-        
         <div class="panel">
           <h2>Nutritional Highlights</h2>
           <table>
@@ -210,18 +222,16 @@
             <tr><td><strong>Fats</strong></td><td>Beneficial fatty acids with low per-serving caloric load.</td></tr>
           </table>
         </div>
-
         <div class="panel">
           <h2>Health Benefits</h2>
           <ul>
             <li><strong>Boosts Immunity:</strong> Antioxidants and selenium support immune health.</li>
-            <li><strong>Improves Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
+            <li><strong>Imප්‍රොවේස් Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
             <li><strong>Brain Function:</strong> B12 and choline support neurotransmitter synthesis.</li>
             <li><strong>Skin & Hair:</strong> Essential nutrients aid cellular repair and maintenance.</li>
             <li><strong>Allergy Management:</strong> Contains ovomucoid proteins studied for anti-allergenic effects.</li>
           </ul>
         </div>
-
         <div class="panel">
           <h2>Packaging & Export Options</h2>
           <ul>
@@ -404,20 +414,43 @@
   </section>
 
   <script>
-    function openPage(id) {
-      document.getElementById('landing').style.display = 'none';
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    function openPage(id, element) {
       const target = document.getElementById(id);
-      if (target) {
+      if (!target) return;
+
+      // Get position of the clicked card/element
+      const rect = element.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // Set the transform origin to the center of the clicked card
+      target.style.transformOrigin = `${centerX}px ${centerY}px`;
+
+      // Show and trigger animation
+      target.style.display = 'block';
+      setTimeout(() => {
         target.classList.add('active');
-        target.scrollTop = 0;
-      }
-      document.body.style.overflow = 'auto';
+        document.body.style.overflow = 'auto';
+        // Optional: hide landing after zoom to improve performance
+        setTimeout(() => {
+          if(target.classList.contains('active')) {
+            document.getElementById('landing').style.visibility = 'hidden';
+          }
+        }, 600);
+      }, 10);
     }
 
     function goHome() {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('landing').style.display = 'flex';
+      const activePage = document.querySelector('.page.active');
+      document.getElementById('landing').style.visibility = 'visible';
+      
+      if (activePage) {
+        activePage.classList.remove('active');
+        setTimeout(() => {
+          activePage.style.display = 'none';
+        }, 600);
+      }
+      
       document.body.style.overflow = 'hidden';
       window.scrollTo(0, 0);
     }
