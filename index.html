@@ -226,7 +226,7 @@
           <h2>Health Benefits</h2>
           <ul>
             <li><strong>Boosts Immunity:</strong> Antioxidants and selenium support immune health.</li>
-            <li><strong>Imප්‍රොවේස් Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
+            <li><strong>Improves Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
             <li><strong>Brain Function:</strong> B12 and choline support neurotransmitter synthesis.</li>
             <li><strong>Skin & Hair:</strong> Essential nutrients aid cellular repair and maintenance.</li>
             <li><strong>Allergy Management:</strong> Contains ovomucoid proteins studied for anti-allergenic effects.</li>
@@ -418,20 +418,16 @@
       const target = document.getElementById(id);
       if (!target) return;
 
-      // Get position of the clicked card/element
       const rect = element.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // Set the transform origin to the center of the clicked card
       target.style.transformOrigin = `${centerX}px ${centerY}px`;
 
-      // Show and trigger animation
       target.style.display = 'block';
       setTimeout(() => {
         target.classList.add('active');
         document.body.style.overflow = 'auto';
-        // Optional: hide landing after zoom to improve performance
         setTimeout(() => {
           if(target.classList.contains('active')) {
             document.getElementById('landing').style.visibility = 'hidden';
