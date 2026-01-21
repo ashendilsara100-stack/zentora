@@ -30,8 +30,12 @@
       background-image: url('Screenshot 2025-12-17 212954.png');
       background-size: cover;
       background-position: center;
+      background-attachment: fixed;
       z-index: -1;
       animation: kenBurns 20s infinite alternate ease-in-out;
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     .bg-overlay::after {
@@ -153,6 +157,18 @@
       .container { flex-direction: column; }
       .col-right { width: 100%; order: -1; }
       .topbar { width: 100%; display: flex; justify-content: center; left: 0; }
+      
+      /* Mobile background fix */
+      .bg-overlay {
+        position: absolute;
+        background-attachment: scroll;
+        min-height: 100vh;
+      }
+      
+      .landing {
+        position: relative;
+        min-height: 100vh;
+      }
     }
 
     .fade { animation: fadeIn 0.8s ease both; }
@@ -226,7 +242,7 @@
           <h2>Health Benefits</h2>
           <ul>
             <li><strong>Boosts Immunity:</strong> Antioxidants and selenium support immune health.</li>
-            <li><strong>Imප්‍රොවේස් Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
+            <li><strong>Improves Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
             <li><strong>Brain Function:</strong> B12 and choline support neurotransmitter synthesis.</li>
             <li><strong>Skin & Hair:</strong> Essential nutrients aid cellular repair and maintenance.</li>
             <li><strong>Allergy Management:</strong> Contains ovomucoid proteins studied for anti-allergenic effects.</li>
@@ -342,7 +358,7 @@
     <div class="container">
       <div class="col-left">
         <h1>Dry Foods — Export Opportunities</h1>
-        <p class="lead">Sri Lanka’s agricultural diversity supports a wide range of dry foods with high international demand.</p>
+        <p class="lead">Sri Lanka's agricultural diversity supports a wide range of dry foods with high international demand.</p>
         <div class="panel">
           <h2>Top Export Candidates</h2>
           <ul>
