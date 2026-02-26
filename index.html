@@ -25,7 +25,7 @@ z-index:1;pointer-events:none;
 nav{
 position:fixed;top:0;width:100%;z-index:100;
 padding:20px 5%;
-display:flex;justify-content:space-between;align-items:center;
+display:flex;align-items:center;
 background:rgba(0,0,0,0.5);
 backdrop-filter:blur(20px);
 border-bottom:1px solid rgba(212,175,55,0.1);
@@ -49,14 +49,6 @@ z-index:2;
 overflow:hidden;
 }
 
-.section::before{
-content:"";
-position:absolute;
-inset:0;
-background:radial-gradient(circle at center, rgba(212,175,55,0.15), transparent 60%);
-z-index:0;
-}
-
 .hero{
 height:100vh;
 display:flex;
@@ -74,11 +66,7 @@ opacity:0;
 transform:translateY(50px);
 }
 
-.hero p{
-max-width:600px;
-color:#ccc;
-margin-top:20px;
-}
+.hero p{max-width:600px;color:#ccc;margin-top:20px;}
 
 .content-box{
 max-width:420px;
@@ -100,22 +88,14 @@ transform:translateX(80px);
 h1{
 font-family:'Playfair Display',serif;
 color:var(--gold);
-font-size:2.8rem;
+font-size:2.5rem;
 margin-bottom:20px;
-line-height:1.2;
 }
 
 p{
 line-height:1.7;
 color:#ddd;
 margin-bottom:25px;
-font-size:1.05rem;
-}
-
-.cta-button:hover{
-transform:scale(1.05);
-background:#fff;
-box-shadow:0 0 35px rgba(212,175,55,0.6);
 }
 
 .scroll-hint{
@@ -159,61 +139,30 @@ letter-spacing:5px;
 
 <div id="canvas-container"></div>
 
-<!-- HERO -->
 <section class="hero">
 <h1 class="hero-title">ZENTORA</h1>
-<p>
-Handcrafted gourmet egg creations inspired by Sri Lankan heritage and global flavors.
-A luxurious taste experience made for true food lovers.
-</p>
+<p>Handcrafted gourmet egg creations inspired by Sri Lankan heritage and global flavors.</p>
 <div class="scroll-hint">SCROLL TO EXPERIENCE</div>
 </section>
 
-<!-- HERITAGE -->
 <section class="section" id="section-1">
 <div class="content-box">
 <h1>Sri Lankan Heritage</h1>
-<p>
-Crafted from a traditional family recipe, our Sri Lankan Egg Pickle blends
-rich spices with delicate quail eggs — delivering a nostalgic island taste.
-</p>
-<a href="#" class="cta-button">Discover the Craft</a>
+<p>Traditional Sri Lankan Egg Pickle made with authentic spices.</p>
 </div>
 </section>
 
-<!-- HEAT -->
 <section class="section" id="section-2">
 <div class="content-box right">
 <h1>Bold Heat</h1>
-<p>
-Fire-roasted chilies meet silky quail eggs to create a deep savory heat
-that elevates every meal.
-</p>
-<a href="#" class="cta-button">Experience the Heat</a>
+<p>Fire roasted chillies blended with silky eggs.</p>
 </div>
 </section>
 
-<!-- GLOBAL -->
 <section class="section" id="section-3">
 <div class="content-box">
 <h1>Global Fusion</h1>
-<p>
-Inspired by Mexican flavors, jalapeños and aromatic herbs bring
-a vibrant international twist.
-</p>
-<a href="#" class="cta-button">Explore the Flavor</a>
-</div>
-</section>
-
-<!-- FINAL -->
-<section class="section" id="section-4">
-<div class="content-box right">
-<h1>A Taste Worth Sharing</h1>
-<p>
-Zentora isn’t just food — it’s an experience.
-Crafted for gatherings and unforgettable moments.
-</p>
-<a href="#" class="cta-button">Order Now</a>
+<p>Mexican inspired fusion with jalapeños.</p>
 </div>
 </section>
 
@@ -224,7 +173,6 @@ const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
 document.getElementById('canvas-container').appendChild(renderer.domElement);
 
 scene.add(new THREE.AmbientLight(0xffffff,1.2));
@@ -232,10 +180,11 @@ camera.position.z=8;
 
 const textureLoader=new THREE.TextureLoader();
 const products=[];
+
 const productData=[
-{url:'sri-lankan-pickle.jpg',x:-4},
-{url:'chilli-paste.jpg',x:0},
-{url:'mexican-pickle.jpg',x:4}
+{url:'sri-lankan-pickle.jpg',startX:6,endX:-3},
+{url:'chilli-paste.jpg',startX:6,endX:-3},
+{url:'mexican-pickle.jpg',startX:6,endX:-3}
 ];
 
 productData.forEach((data,i)=>{
@@ -248,7 +197,7 @@ opacity:0.15,
 side:THREE.DoubleSide
 });
 const mesh=new THREE.Mesh(geometry,material);
-mesh.position.set(data.x,0,0);
+mesh.position.set(data.startX,0,0);
 scene.add(mesh);
 products[i]=mesh;
 
@@ -261,21 +210,14 @@ scrub:1
 }
 });
 
-tl.to(mesh.position,{x:0,z:4})
-.to(mesh.scale,{x:2.2,y:2.2,z:1},0)
+tl.to(mesh.position,{x:data.endX,z:4})
+.to(mesh.scale,{x:1.8,y:1.8,z:1},0)
 .to(mesh.material,{opacity:1},0);
 });
 });
 
 function animate(){
 requestAnimationFrame(animate);
-const time=Date.now()*0.001;
-products.forEach((mesh,i)=>{
-if(mesh){
-mesh.position.y+=Math.sin(time+i)*0.002;
-mesh.rotation.y=Math.sin(time*0.5)*0.08;
-}
-});
 renderer.render(scene,camera);
 }
 animate();
@@ -296,12 +238,6 @@ scrub:1
 opacity:1,
 x:0
 });
-});
-
-window.addEventListener('resize',()=>{
-camera.aspect=window.innerWidth/window.innerHeight;
-camera.updateProjectionMatrix();
-renderer.setSize(window.innerWidth,window.innerHeight);
 });
 </script>
 
