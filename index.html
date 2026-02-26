@@ -4,161 +4,951 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Zentora — Premium 3D Experience</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
-    :root { --gold: #d4af37; --black: #050505; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-    body { background: #000; color: #fff; overflow-x: hidden; }
+    :root {
+      --gold: #d4af37;
+      --gold-light: #e6c961;
+      --black: #0a0a0a;
+    }
 
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Inter', sans-serif;
+    }
+
+    body { 
+      background: #000; 
+      color: #fff; 
+      overflow-x: hidden;
+    }
+
+    /* Canvas Container - 3D Scene */
     #canvas-container {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-      z-index: 1; pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
     }
 
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      border: 2px solid var(--gold);
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    /* Sections */
     .section {
-      position: relative; height: 100vh; display: flex; align-items: center;
-      padding: 0 8%; z-index: 2;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 8%;
+      z-index: 2;
     }
 
-    .content {
-      max-width: 450px; background: rgba(255, 255, 255, 0.03);
-      padding: 40px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px); transform: translateX(-100px); opacity: 0;
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
-    .topbar { position: fixed; top: 30px; left: 30px; z-index: 100; display: flex; align-items: center; gap: 15px; }
-    .logo-box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-    
-    h1 { color: var(--gold); font-size: 2.5rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
-    p { font-size: 1rem; line-height: 1.7; color: #ddd; }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      font-weight: 900;
+      color: var(--gold);
+      margin-bottom: 20px;
+      letter-spacing: 8px;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .hero-subtitle {
+      font-size: 1.8rem;
+      color: #aaa;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .hero-tagline {
+      font-size: 1.2rem;
+      color: #888;
+      font-style: italic;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--gold);
+      font-size: 0.9rem;
+      animation: bounce 2s infinite;
+      opacity: 0;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    /* Content Boxes */
+    .content-box {
+      max-width: 550px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 50px;
+      border-radius: 30px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      transform: translateX(-100px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .content-box.right {
+      margin-left: auto;
+      transform: translateX(100px);
+    }
+
+    .product-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 15px;
+      letter-spacing: 3px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: 3.5rem;
+      margin-bottom: 25px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
+
+    .features {
+      list-style: none;
+      margin: 25px 0;
+    }
+
+    .features li {
+      padding: 10px 0;
+      padding-left: 30px;
+      position: relative;
+      color: #ccc;
+    }
+
+    .features li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 15px 35px;
+      background: linear-gradient(135deg, #b8941f, #e6c961);
+      color: #000;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+      margin-top: 15px;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(212, 175, 55, 0.5);
+    }
+
+    /* Contact FAB */
+    .contact-fab {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #b8941f, #e6c961);
+      color: #000;
+      border-radius: 50px;
+      font-weight: 700;
+      z-index: 1000;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
+      70% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 60px 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    footer h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    footer p {
+      color: #888;
+      margin-bottom: 30px;
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .contact-item {
+      text-align: center;
+    }
+
+    .contact-item h3 {
+      color: var(--gold);
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-item p {
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+
+    .contact-item a {
+      color: #ccc;
+      transition: color 0.3s;
+    }
+
+    .contact-item a:hover {
+      color: var(--gold);
+    }
 
     /* Loading Screen */
     #loader {
-      position: fixed; inset: 0; background: #000; z-index: 1000;
-      display: flex; justify-content: center; align-items: center; color: var(--gold);
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .loader-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: var(--gold);
+      letter-spacing: 8px;
+      margin-bottom: 20px;
+    }
+
+    .loader-bar {
+      width: 300px;
+      height: 3px;
+      background: rgba(212, 175, 55, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .loader-progress {
+      height: 100%;
+      background: var(--gold);
+      width: 0%;
+      animation: load 2s ease-in-out forwards;
+    }
+
+    @keyframes load {
+      to { width: 100%; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title { font-size: 3rem; }
+      h1 { font-size: 2.5rem; }
+      .content-box { padding: 30px; }
+      .nav-links { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <div id="loader"><h1>ZENTORA...</h1></div>
-  <div id="canvas-container"></div>
-
-  <div class="topbar">
-    <div class="logo-box"><img src="LOGO.jpg" style="width:50px; border-radius:5px;"></div>
-    <div><b style="color:var(--gold)">ZENTORA PVT LTD</b><br><small>Premium Exports</small></div>
+  <!-- Loading Screen -->
+  <div id="loader">
+    <div class="loader-text">ZENTORA</div>
+    <div class="loader-bar">
+      <div class="loader-progress"></div>
+    </div>
   </div>
 
-  <section class="section" id="sec-1">
-    <div class="content">
-      <h1>Ceylon Cinnamon</h1>
-      <p>Experience the aroma of authentic Sri Lankan "True Cinnamon". Hand-peeled and sun-dried to perfection for the global market.</p>
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">
+      <img src="LOGO.jpg" alt="Zentora" />
+      <div class="logo-text">ZENTORA</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- 3D Canvas -->
+  <div id="canvas-container"></div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <h1 class="hero-title">ZENTORA</h1>
+    <p class="hero-subtitle">Artisanal Egg Products</p>
+    <p class="hero-tagline">"Loyalty fuels the future"</p>
+    <div class="scroll-hint">↓ Scroll to explore ↓</div>
+  </section>
+
+  <!-- Product Sections -->
+  <section class="section" id="section-1">
+    <div class="content-box">
+      <div class="product-number">01 / TRADITIONAL</div>
+      <h1>Sri Lankan<br>Egg Pickle</h1>
+      <p>Authentic recipe with premium quail eggs and traditional Sri Lankan spices. Hand-crafted for exceptional flavor and quality.</p>
+      <ul class="features">
+        <li>Traditional Sri Lankan recipe</li>
+        <li>Premium quail eggs</li>
+        <li>Natural spice blend</li>
+        <li>High protein content</li>
+        <li>Export quality standards</li>
+      </ul>
+      <a href="#contact" class="cta-button">Request Quote →</a>
     </div>
   </section>
 
-  <section class="section" id="sec-2">
-    <div class="content" style="margin-left: auto; transform: translateX(100px);">
-      <h1>Quail Eggs</h1>
-      <p>Nutrient-dense superfood, cleaned and packed with precision. Delivering freshness from our farms to your doorstep.</p>
+  <section class="section" id="section-2">
+    <div class="content-box right">
+      <div class="product-number">02 / SPICY</div>
+      <h1>Egg<br>Chilli Paste</h1>
+      <p>Fiery blend of quail eggs and handpicked chilies. Perfect balance of heat and savory richness for spice enthusiasts.</p>
+      <ul class="features">
+        <li>Premium red chilies</li>
+        <li>Protein-rich eggs</li>
+        <li>Bold, spicy flavor</li>
+        <li>Energy boosting</li>
+        <li>Versatile condiment</li>
+      </ul>
+      <a href="#contact" class="cta-button">Request Quote →</a>
     </div>
   </section>
 
-  <section class="section" id="sec-3">
-    <div class="content">
-      <h1>Native Spices</h1>
-      <p>Premium Black Pepper and Turmeric with high oil content. Pure, potent, and 100% natural Sri Lankan produce.</p>
+  <section class="section" id="section-3">
+    <div class="content-box">
+      <div class="product-number">03 / FUSION</div>
+      <h1>Mexican<br>Egg Pickle</h1>
+      <p>International fusion with jalapeños and aromatic herbs. A gourmet product designed for the global palate.</p>
+      <ul class="features">
+        <li>Global fusion recipe</li>
+        <li>Fresh jalapeños</li>
+        <li>Cilantro & lime</li>
+        <li>Gourmet quality</li>
+        <li>International appeal</li>
+      </ul>
+      <a href="#contact" class="cta-button">Request Quote →</a>
     </div>
   </section>
+
+  <!-- Contact Section -->
+  <footer id="contact">
+    <h2>Get In Touch</h2>
+    <p>Ready to explore our premium egg products? Contact us today.</p>
+    
+    <div class="contact-info">
+      <div class="contact-item">
+        <h3>Director</h3>
+        <p>A.L.G. Sudam Pabasara</p>
+      </div>
+      <div class="contact-item">
+        <h3>Phone</h3>
+        <p><a href="tel:+94754391779">+94 75 439 1779</a></p>
+      </div>
+      <div class="contact-item">
+        <h3>Email</h3>
+        <p><a href="mailto:info@zentora.lk">info@zentora.lk</a></p>
+      </div>
+      <div class="contact-item">
+        <h3>Location</h3>
+        <p>Gampaha, Sri Lanka</p>
+      </div>
+    </div>
+
+    <a href="https://wa.me/94754391779" class="cta-button" style="background: linear-gradient(135deg, #25D366, #128C7E);">
+      💬 WhatsApp Us
+    </a>
+
+    <p style="margin-top: 50px; font-size: 0.85rem; color: #555;">
+      © 2024 Zentora Private Limited. All rights reserved.
+    </p>
+  </footer>
+
+  <a href="https://wa.me/94754391779" class="contact-fab">Contact Us</a>
 
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. Scene Setup
+    // === Three.js Scene Setup ===
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-    // 2. Lights
+    // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
-    const spotLight = new THREE.SpotLight(0xd4af37, 2);
-    spotLight.position.set(10, 10, 10);
-    scene.add(spotLight);
+    
+    const spotLight1 = new THREE.SpotLight(0xd4af37, 2);
+    spotLight1.position.set(10, 10, 10);
+    scene.add(spotLight1);
+    
+    const spotLight2 = new THREE.SpotLight(0xffffff, 1);
+    spotLight2.position.set(-10, -10, 10);
+    scene.add(spotLight2);
 
-    let cinnamonModel;
+    camera.position.z = 10;
 
-    // 3. Load Your Cinnamon Model
-    const loader = new THREE.GLTFLoader();
-    // මෙතන 'cinnamon.glb' කියන තැනට ඔයාගේ file එකේ නම දෙන්න
-    loader.load('poly.glb', function(gltf) {
-      cinnamonModel = gltf.scene;
-      cinnamonModel.scale.set(2, 2, 2); // Model එක පොඩි වැඩි නම් මේක වැඩි කරන්න
-      cinnamonModel.position.set(2, 0, 0); // මුල් පිහිටීම (දකුණු පැත්තේ)
-      scene.add(cinnamonModel);
-      
-      // Remove Loader
-      gsap.to("#loader", { opacity: 0, duration: 1, onComplete: () => document.getElementById('loader').remove() });
+    // === Load Product Images as 3D Planes ===
+    const textureLoader = new THREE.TextureLoader();
+    const products = [];
 
-      // 4. Scroll Animations
-      // Section 1: Animation
-      gsap.to(cinnamonModel.rotation, {
-        scrollTrigger: { trigger: "#sec-1", scrub: 1 },
-        y: Math.PI * 2
+    // Product 1: Sri Lankan Pickle
+    textureLoader.load('sri-lankan-pickle.jpg', (texture) => {
+      const geometry = new THREE.PlaneGeometry(3, 3);
+      const material = new THREE.MeshStandardMaterial({ 
+        map: texture, 
+        transparent: true,
+        side: THREE.DoubleSide
       });
-
-      // Section 2: Move to Left & Rotate
-      gsap.to(cinnamonModel.position, {
-        scrollTrigger: { trigger: "#sec-2", start: "top bottom", end: "top center", scrub: 1 },
-        x: -2, z: -1
-      });
-      gsap.to(cinnamonModel.rotation, {
-        scrollTrigger: { trigger: "#sec-2", scrub: 1 },
-        x: 2, y: -Math.PI
-      });
-
-      // Section 3: Bring to Center and Scale Up
-      gsap.to(cinnamonModel.position, {
-        scrollTrigger: { trigger: "#sec-3", start: "top bottom", end: "top center", scrub: 1 },
-        x: 0, y: 0.5, z: 2
-      });
-    }, 
-    undefined, 
-    function(error) {
-      console.error("Model load වුණේ නැහැ. පින්තූරයක් පෙන්වමු.");
-      // වැරදුනොත් පෙන්වන්න සරල හැඩයක් (Cylinder)
-      const geo = new THREE.CylinderGeometry(0.5, 0.5, 4, 32);
-      const mat = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
-      cinnamonModel = new THREE.Mesh(geo, mat);
-      scene.add(cinnamonModel);
-      document.getElementById('loader').remove();
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(-3, 0, 0);
+      mesh.userData = { 
+        name: 'srilankan',
+        originalPos: { x: -3, y: 0, z: 0 },
+        glowColor: 0xd4af37
+      };
+      scene.add(mesh);
+      products.push(mesh);
     });
 
-    camera.position.z = 7;
-
-    // 5. Text Animations
-    document.querySelectorAll('.content').forEach((box) => {
-      gsap.to(box, {
-        scrollTrigger: { trigger: box, start: "top 80%", end: "top 40%", scrub: 1 },
-        opacity: 1, x: 0
+    // Product 2: Chilli Paste
+    textureLoader.load('chilli-paste.jpg', (texture) => {
+      const geometry = new THREE.PlaneGeometry(3, 3);
+      const material = new THREE.MeshStandardMaterial({ 
+        map: texture, 
+        transparent: true,
+        side: THREE.DoubleSide
       });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(0, 0, 0);
+      mesh.userData = { 
+        name: 'chillipaste',
+        originalPos: { x: 0, y: 0, z: 0 },
+        glowColor: 0xff4500
+      };
+      scene.add(mesh);
+      products.push(mesh);
     });
 
+    // Product 3: Mexican Pickle
+    textureLoader.load('mexican-pickle.jpg', (texture) => {
+      const geometry = new THREE.PlaneGeometry(3, 3);
+      const material = new THREE.MeshStandardMaterial({ 
+        map: texture, 
+        transparent: true,
+        side: THREE.DoubleSide
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(3, 0, 0);
+      mesh.userData = { 
+        name: 'mexican',
+        originalPos: { x: 3, y: 0, z: 0 },
+        glowColor: 0x90EE90
+      };
+      scene.add(mesh);
+      products.push(mesh);
+    });
+
+    // === Glow/Halo Effect for each product ===
+    function createGlow(product, color) {
+      const glowGeometry = new THREE.PlaneGeometry(3.5, 3.5);
+      const glowMaterial = new THREE.MeshBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: 0,
+        side: THREE.DoubleSide
+      });
+      const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+      glow.position.z = -0.1;
+      product.add(glow);
+      product.userData.glow = glow;
+    }
+
+    // Wait for products to load then create glows
+    setTimeout(() => {
+      products.forEach(product => {
+        createGlow(product, product.userData.glowColor);
+      });
+    }, 500);
+
+    // === Particle System ===
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 200;
+    const positions = new Float32Array(particlesCount * 3);
+
+    for(let i = 0; i < particlesCount * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 20;
+    }
+
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      color: 0xd4af37,
+      size: 0.05,
+      transparent: true,
+      opacity: 0.6
+    });
+
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // === Animation Loop ===
     function animate() {
       requestAnimationFrame(animate);
-      if(cinnamonModel) cinnamonModel.rotation.y += 0.005; // ඉතා සෙමින් කැරකීම
+      
+      // Gentle rotation for all products
+      products.forEach(product => {
+        product.rotation.y += 0.002;
+      });
+
+      // Particle rotation
+      particlesMesh.rotation.y += 0.0005;
+
       renderer.render(scene, camera);
     }
     animate();
 
+    // === GSAP Scroll Animations ===
+
+    // Hero animations
+    setTimeout(() => {
+      gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1, delay: 2.2 });
+      gsap.to('.hero-subtitle', { opacity: 1, y: 0, duration: 1, delay: 2.4 });
+      gsap.to('.hero-tagline', { opacity: 1, y: 0, duration: 1, delay: 2.6 });
+      gsap.to('.scroll-hint', { opacity: 1, duration: 1, delay: 2.8 });
+    }, 100);
+
+    // Section 1: Sri Lankan Pickle Focus
+    if(products[0]) {
+      // Move to center and enlarge
+      gsap.to(products[0].position, {
+        scrollTrigger: {
+          trigger: '#section-1',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        x: 0,
+        y: 0,
+        z: 2
+      });
+
+      gsap.to(products[0].scale, {
+        scrollTrigger: {
+          trigger: '#section-1',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        x: 1.5,
+        y: 1.5,
+        z: 1.5
+      });
+
+      // Glow effect
+      setTimeout(() => {
+        if(products[0].userData.glow) {
+          gsap.to(products[0].userData.glow.material, {
+            scrollTrigger: {
+              trigger: '#section-1',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            opacity: 0.3
+          });
+        }
+      }, 600);
+
+      // Other products fade and blur
+      [1, 2].forEach(i => {
+        if(products[i]) {
+          gsap.to(products[i].material, {
+            scrollTrigger: {
+              trigger: '#section-1',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            opacity: 0.3
+          });
+
+          gsap.to(products[i].position, {
+            scrollTrigger: {
+              trigger: '#section-1',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            z: -2
+          });
+        }
+      });
+    }
+
+    // Section 2: Chilli Paste Focus
+    if(products[1]) {
+      gsap.to(products[1].position, {
+        scrollTrigger: {
+          trigger: '#section-2',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        x: 0,
+        y: 0,
+        z: 2
+      });
+
+      gsap.to(products[1].scale, {
+        scrollTrigger: {
+          trigger: '#section-2',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        x: 1.5,
+        y: 1.5,
+        z: 1.5
+      });
+
+      gsap.to(products[1].material, {
+        scrollTrigger: {
+          trigger: '#section-2',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        opacity: 1
+      });
+
+      setTimeout(() => {
+        if(products[1].userData.glow) {
+          gsap.to(products[1].userData.glow.material, {
+            scrollTrigger: {
+              trigger: '#section-2',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            opacity: 0.3
+          });
+        }
+      }, 600);
+
+      // Reset product 0, fade product 2
+      if(products[0]) {
+        gsap.to(products[0].scale, {
+          scrollTrigger: {
+            trigger: '#section-2',
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1
+          },
+          x: 1,
+          y: 1,
+          z: 1
+        });
+
+        gsap.to(products[0].position, {
+          scrollTrigger: {
+            trigger: '#section-2',
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1
+          },
+          x: -3,
+          z: -2
+        });
+
+        gsap.to(products[0].material, {
+          scrollTrigger: {
+            trigger: '#section-2',
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1
+          },
+          opacity: 0.3
+        });
+
+        if(products[0].userData.glow) {
+          gsap.to(products[0].userData.glow.material, {
+            scrollTrigger: {
+              trigger: '#section-2',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            opacity: 0
+          });
+        }
+      }
+
+      if(products[2]) {
+        gsap.to(products[2].material, {
+          scrollTrigger: {
+            trigger: '#section-2',
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1
+          },
+          opacity: 0.3
+        });
+
+        gsap.to(products[2].position, {
+          scrollTrigger: {
+            trigger: '#section-2',
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1
+          },
+          z: -2
+        });
+      }
+    }
+
+    // Section 3: Mexican Pickle Focus
+    if(products[2]) {
+      gsap.to(products[2].position, {
+        scrollTrigger: {
+          trigger: '#section-3',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        x: 0,
+        y: 0,
+        z: 2
+      });
+
+      gsap.to(products[2].scale, {
+        scrollTrigger: {
+          trigger: '#section-3',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        x: 1.5,
+        y: 1.5,
+        z: 1.5
+      });
+
+      gsap.to(products[2].material, {
+        scrollTrigger: {
+          trigger: '#section-3',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1
+        },
+        opacity: 1
+      });
+
+      setTimeout(() => {
+        if(products[2].userData.glow) {
+          gsap.to(products[2].userData.glow.material, {
+            scrollTrigger: {
+              trigger: '#section-3',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            opacity: 0.3
+          });
+        }
+      }, 600);
+
+      // Reset other products
+      [0, 1].forEach(i => {
+        if(products[i]) {
+          gsap.to(products[i].scale, {
+            scrollTrigger: {
+              trigger: '#section-3',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            x: 1,
+            y: 1,
+            z: 1
+          });
+
+          gsap.to(products[i].position, {
+            scrollTrigger: {
+              trigger: '#section-3',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            x: products[i].userData.originalPos.x,
+            z: -2
+          });
+
+          gsap.to(products[i].material, {
+            scrollTrigger: {
+              trigger: '#section-3',
+              start: 'top center',
+              end: 'bottom center',
+              scrub: 1
+            },
+            opacity: 0.3
+          });
+
+          if(products[i].userData.glow) {
+            gsap.to(products[i].userData.glow.material, {
+              scrollTrigger: {
+                trigger: '#section-3',
+                start: 'top center',
+                end: 'bottom center',
+                scrub: 1
+              },
+              opacity: 0
+            });
+          }
+        }
+      });
+    }
+
+    // Content boxes animation
+    gsap.utils.toArray('.content-box').forEach(box => {
+      gsap.to(box, {
+        scrollTrigger: {
+          trigger: box,
+          start: 'top 80%',
+          end: 'top 40%',
+          scrub: 1
+        },
+        opacity: 1,
+        x: 0
+      });
+    });
+
+    // Remove loader
+    setTimeout(() => {
+      gsap.to('#loader', {
+        opacity: 0,
+        duration: 1,
+        onComplete: () => document.getElementById('loader').remove()
+      });
+    }, 2000);
+
+    // Resize handler
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
