@@ -44,8 +44,17 @@ position:relative;
 min-height:100vh;
 display:flex;
 align-items:center;
-padding:0 8%;
+padding:0 10%;
 z-index:2;
+overflow:hidden;
+}
+
+.section::before{
+content:"";
+position:absolute;
+inset:0;
+background:radial-gradient(circle at center, rgba(212,175,55,0.15), transparent 60%);
+z-index:0;
 }
 
 .hero{
@@ -72,40 +81,35 @@ margin-top:20px;
 }
 
 .content-box{
-max-width:450px;
-background:rgba(0,0,0,0.7);
-padding:40px;
-border-radius:20px;
-border:1px solid rgba(212,175,55,0.2);
-backdrop-filter:blur(15px);
+max-width:420px;
+background:rgba(0,0,0,0.45);
+padding:45px;
+border-radius:30px;
+border:1px solid rgba(212,175,55,0.15);
+backdrop-filter:blur(8px);
+box-shadow:0 0 60px rgba(212,175,55,0.15);
 opacity:0;
-transform:translateX(-50px);
+transform:translateX(-80px);
 }
 
 .content-box.right{
 margin-left:auto;
-transform:translateX(50px);
+transform:translateX(80px);
 }
 
 h1{
 font-family:'Playfair Display',serif;
 color:var(--gold);
-font-size:2.5rem;
-margin-bottom:15px;
+font-size:2.8rem;
+margin-bottom:20px;
+line-height:1.2;
 }
 
-p{line-height:1.6;color:#ccc;margin-bottom:20px;}
-
-.cta-button{
-display:inline-block;
-padding:12px 28px;
-background:var(--gold);
-color:#000;
-border-radius:50px;
-font-weight:600;
-text-decoration:none;
-transition:0.3s;
-box-shadow:0 0 20px rgba(212,175,55,0.3);
+p{
+line-height:1.7;
+color:#ddd;
+margin-bottom:25px;
+font-size:1.05rem;
 }
 
 .cta-button:hover{
@@ -240,7 +244,7 @@ const geometry=new THREE.PlaneGeometry(3,3);
 const material=new THREE.MeshStandardMaterial({
 map:texture,
 transparent:true,
-opacity:0.3,
+opacity:0.15,
 side:THREE.DoubleSide
 });
 const mesh=new THREE.Mesh(geometry,material);
