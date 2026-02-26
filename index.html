@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Zentora Private Limited — 3D Experience</title>
+  <title>Zentora — Premium 3D Experience</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -15,164 +16,154 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
     body { background: #000; color: #fff; overflow-x: hidden; }
 
-    /* 3D Canvas Background */
     #canvas-container {
       position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-      z-index: 1; pointer-events: none; /* Allows clicking through to buttons */
+      z-index: 1; pointer-events: none;
     }
 
     .section {
       position: relative; height: 100vh; display: flex; align-items: center;
-      padding: 0 10%; z-index: 2;
+      padding: 0 8%; z-index: 2;
     }
 
-    .content-box {
-      max-width: 500px; background: rgba(0,0,0,0.6);
-      padding: 30px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.2);
-      backdrop-filter: blur(10px);
-      transform: translateY(50px); opacity: 0;
+    .content {
+      max-width: 450px; background: rgba(255, 255, 255, 0.03);
+      padding: 40px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px); transform: translateX(-100px); opacity: 0;
     }
 
-    .topbar { position: fixed; top: 20px; left: 20px; z-index: 100; display: flex; align-items: center; gap: 15px; }
-    .logo-container { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-    .logo-img { width: 50px; height: 50px; border-radius: 8px; }
+    .topbar { position: fixed; top: 30px; left: 30px; z-index: 100; display: flex; align-items: center; gap: 15px; }
+    .logo-box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+    
+    h1 { color: var(--gold); font-size: 2.5rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+    p { font-size: 1rem; line-height: 1.7; color: #ddd; }
 
-    h1 { color: var(--gold); font-size: 3rem; margin-bottom: 20px; }
-    p { font-size: 1.1rem; line-height: 1.6; color: #ccc; }
-
-    .contact-fab {
-      position: fixed; bottom: 30px; right: 30px; z-index: 100;
-      background: var(--gold); color: #000; padding: 15px 30px;
-      border-radius: 50px; font-weight: bold; cursor: pointer;
-    }
-
-    /* Decorative Glow */
-    .glow {
-      position: absolute; width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
-      pointer-events: none;
+    /* Loading Screen */
+    #loader {
+      position: fixed; inset: 0; background: #000; z-index: 1000;
+      display: flex; justify-content: center; align-items: center; color: var(--gold);
     }
   </style>
 </head>
 <body>
 
+  <div id="loader"><h1>ZENTORA...</h1></div>
   <div id="canvas-container"></div>
 
   <div class="topbar">
-    <div class="logo-container">
-      <img src="LOGO.jpg" class="logo-img" alt="Zentora Logo">
-    </div>
-    <div>
-      <div style="color:var(--gold); font-weight:700;">ZENTORA PVT LTD</div>
-      <div style="font-size:10px; opacity:0.7;">PREMIUM SRI LANKAN EXPORTS</div>
-    </div>
+    <div class="logo-box"><img src="LOGO.jpg" style="width:50px; border-radius:5px;"></div>
+    <div><b style="color:var(--gold)">ZENTORA PVT LTD</b><br><small>Premium Exports</small></div>
   </div>
 
   <section class="section" id="sec-1">
-    <div class="content-box">
+    <div class="content">
       <h1>Ceylon Cinnamon</h1>
-      <p>The world's finest "True Cinnamon" sourced directly from the gardens of Sri Lanka. Low coumarin, high aroma.</p>
+      <p>Experience the aroma of authentic Sri Lankan "True Cinnamon". Hand-peeled and sun-dried to perfection for the global market.</p>
     </div>
   </section>
 
   <section class="section" id="sec-2">
-    <div class="content-box">
+    <div class="content" style="margin-left: auto; transform: translateX(100px);">
       <h1>Quail Eggs</h1>
-      <p>Nutrient-packed specialty eggs. A superfood for the global gourmet market, processed with highest hygiene standards.</p>
+      <p>Nutrient-dense superfood, cleaned and packed with precision. Delivering freshness from our farms to your doorstep.</p>
     </div>
   </section>
 
   <section class="section" id="sec-3">
-    <div class="content-box">
+    <div class="content">
       <h1>Native Spices</h1>
-      <p>From Black Pepper to high-curcumin Turmeric. We export the authentic soul of Sri Lankan flavors.</p>
+      <p>Premium Black Pepper and Turmeric with high oil content. Pure, potent, and 100% natural Sri Lankan produce.</p>
     </div>
   </section>
 
-  <div class="contact-fab">Connect With Us</div>
-
   <script>
-    // 1. Setup Three.js Scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-    const pointLight = new THREE.PointLight(0xd4af37, 2);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    // 2. Create Placeholder 3D Objects (Replace these with your GLB models)
-    // Cinnamon Placeholder (Cylinder)
-    const cinnamonGeo = new THREE.CylinderGeometry(0.5, 0.5, 4, 32);
-    const cinnamonMat = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
-    const cinnamon = new THREE.Mesh(cinnamonGeo, cinnamonMat);
-    cinnamon.position.x = 2; // Position to the right
-    scene.add(cinnamon);
-
-    // Quail Egg Placeholder (Sphere)
-    const eggGeo = new THREE.SphereGeometry(1.5, 32, 32);
-    const eggMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
-    const egg = new THREE.Mesh(eggGeo, eggMat);
-    egg.position.x = 10; // Initially far away
-    scene.add(egg);
-
-    camera.position.z = 5;
-
-    // 3. Scroll Animations with GSAP
     gsap.registerPlugin(ScrollTrigger);
 
-    // Reveal Content Boxes
-    document.querySelectorAll('.content-box').forEach((box) => {
+    // 1. Scene Setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    // 2. Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+    const spotLight = new THREE.SpotLight(0xd4af37, 2);
+    spotLight.position.set(10, 10, 10);
+    scene.add(spotLight);
+
+    let cinnamonModel;
+
+    // 3. Load Your Cinnamon Model
+    const loader = new THREE.GLTFLoader();
+    // මෙතන 'cinnamon.glb' කියන තැනට ඔයාගේ file එකේ නම දෙන්න
+    loader.load('poly.glb', function(gltf) {
+      cinnamonModel = gltf.scene;
+      cinnamonModel.scale.set(2, 2, 2); // Model එක පොඩි වැඩි නම් මේක වැඩි කරන්න
+      cinnamonModel.position.set(2, 0, 0); // මුල් පිහිටීම (දකුණු පැත්තේ)
+      scene.add(cinnamonModel);
+      
+      // Remove Loader
+      gsap.to("#loader", { opacity: 0, duration: 1, onComplete: () => document.getElementById('loader').remove() });
+
+      // 4. Scroll Animations
+      // Section 1: Animation
+      gsap.to(cinnamonModel.rotation, {
+        scrollTrigger: { trigger: "#sec-1", scrub: 1 },
+        y: Math.PI * 2
+      });
+
+      // Section 2: Move to Left & Rotate
+      gsap.to(cinnamonModel.position, {
+        scrollTrigger: { trigger: "#sec-2", start: "top bottom", end: "top center", scrub: 1 },
+        x: -2, z: -1
+      });
+      gsap.to(cinnamonModel.rotation, {
+        scrollTrigger: { trigger: "#sec-2", scrub: 1 },
+        x: 2, y: -Math.PI
+      });
+
+      // Section 3: Bring to Center and Scale Up
+      gsap.to(cinnamonModel.position, {
+        scrollTrigger: { trigger: "#sec-3", start: "top bottom", end: "top center", scrub: 1 },
+        x: 0, y: 0.5, z: 2
+      });
+    }, 
+    undefined, 
+    function(error) {
+      console.error("Model load වුණේ නැහැ. පින්තූරයක් පෙන්වමු.");
+      // වැරදුනොත් පෙන්වන්න සරල හැඩයක් (Cylinder)
+      const geo = new THREE.CylinderGeometry(0.5, 0.5, 4, 32);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+      cinnamonModel = new THREE.Mesh(geo, mat);
+      scene.add(cinnamonModel);
+      document.getElementById('loader').remove();
+    });
+
+    camera.position.z = 7;
+
+    // 5. Text Animations
+    document.querySelectorAll('.content').forEach((box) => {
       gsap.to(box, {
-        scrollTrigger: { trigger: box, start: "top 80%", end: "top 30%", scrub: true },
-        opacity: 1, translateY: 0
+        scrollTrigger: { trigger: box, start: "top 80%", end: "top 40%", scrub: 1 },
+        opacity: 1, x: 0
       });
     });
 
-    // 3D Model Movements
-    // Section 1 to 2: Move Cinnamon away, Bring Egg in
-    gsap.timeline({
-      scrollTrigger: { trigger: "#sec-2", start: "top bottom", end: "top center", scrub: 1 }
-    })
-    .to(cinnamon.position, { x: -10, y: 5, z: -5 }) // Move cinnamon out
-    .to(egg.position, { x: 2 }, "<"); // Move egg in at the same time
-
-    // Section 2 to 3: Rotate Egg and change color (Example)
-    gsap.timeline({
-      scrollTrigger: { trigger: "#sec-3", start: "top bottom", end: "top center", scrub: 1 }
-    })
-    .to(egg.rotation, { y: Math.PI * 2, x: Math.PI })
-    .to(egg.scale, { x: 0.5, y: 0.5, z: 0.5 });
-
-    // Continuous Rotation
     function animate() {
       requestAnimationFrame(animate);
-      cinnamon.rotation.y += 0.01;
-      egg.rotation.z += 0.01;
+      if(cinnamonModel) cinnamonModel.rotation.y += 0.005; // ඉතා සෙමින් කැරකීම
       renderer.render(scene, camera);
     }
     animate();
 
-    // Responsive Resize
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
-
-    /* NOTE TO ADD YOUR MODELS:
-       To add a real 3D model, use THREE.GLTFLoader() like this:
-       const loader = new THREE.GLTFLoader();
-       loader.load('path/to/your/model.glb', function(gltf) {
-          scene.add(gltf.scene);
-          // then animate gltf.scene instead of 'cinnamon'
-       });
-    */
   </script>
 </body>
 </html>
