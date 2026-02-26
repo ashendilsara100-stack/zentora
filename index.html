@@ -13,243 +13,112 @@
   <style>
     :root {
       --gold: #d4af37;
-      --gold-light: #e6c961;
       --black: #0a0a0a;
     }
 
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Inter', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background: #000; color: #fff; overflow-x: hidden; }
 
-    body { 
-      background: #000; 
-      color: #fff; 
-      overflow-x: hidden;
-    }
-
-    /* Canvas Container */
     #canvas-container {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: 1;
-      pointer-events: none;
+      top: 0; left: 0; width: 100%; height: 100vh;
+      z-index: 1; pointer-events: none;
     }
 
-    /* Navigation */
     nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 100;
-      padding: 20px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(20px);
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
+    .logo { display: flex; align-items: center; gap: 15px; }
+    .logo img { width: 45px; height: 45px; border-radius: 8px; border: 1px solid var(--gold); }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
 
-    .logo img {
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-      border: 2px solid var(--gold);
-    }
+    .section { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 0 8%; z-index: 2; }
+    .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--gold);
-      letter-spacing: 3px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 30px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    /* Sections */
-    .section {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 0 8%;
-      z-index: 2;
-    }
-
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 6rem;
-      font-weight: 900;
-      color: var(--gold);
-      margin-bottom: 20px;
-      letter-spacing: 8px;
-      opacity: 0;
-      transform: translateY(50px);
-    }
-
-    .hero-subtitle {
-      font-size: 1.8rem;
-      color: #aaa;
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    /* Content Boxes */
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 10vw, 6rem); color: var(--gold); opacity: 0; transform: translateY(50px); }
+    
     .content-box {
-      max-width: 500px;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 40px;
-      border-radius: 20px;
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      transform: translateX(-50px);
+      max-width: 450px; background: rgba(0, 0, 0, 0.7); padding: 40px; border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.2); backdrop-filter: blur(15px);
+      opacity: 0; transform: translateX(-50px); transition: transform 0.5s ease;
     }
 
-    .content-box.right {
-      margin-left: auto;
-      transform: translateX(50px);
-    }
+    .content-box.right { margin-left: auto; transform: translateX(50px); }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      color: var(--gold);
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
+    h1 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 2.5rem; margin-bottom: 15px; }
     p { line-height: 1.6; color: #ccc; margin-bottom: 20px; }
 
     .cta-button {
-      display: inline-block;
-      padding: 12px 30px;
-      background: var(--gold);
-      color: #000;
-      border-radius: 50px;
-      font-weight: 600;
-      text-decoration: none;
+      display: inline-block; padding: 12px 28px; background: var(--gold); color: #000;
+      border-radius: 50px; font-weight: 600; text-decoration: none; transition: 0.3s;
     }
+    .cta-button:hover { transform: scale(1.05); background: #fff; }
 
-    /* Loader */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 10000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; }
+    .loader-text { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); letter-spacing: 5px; }
 
-    .loader-text { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); }
-
-    @media (max-width: 768px) {
-      .hero-title { font-size: 3rem; }
-      .content-box { padding: 20px; width: 100%; }
-    }
+    .scroll-hint { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 0.8rem; letter-spacing: 2px; }
   </style>
 </head>
 <body>
 
-  <div id="loader">
-    <div class="loader-text">ZENTORA</div>
-  </div>
+  <div id="loader"><div class="loader-text">ZENTORA</div></div>
 
   <nav>
     <div class="logo">
       <img src="LOGO.jpg" alt="Zentora" />
       <div class="logo-text">ZENTORA</div>
     </div>
-    <ul class="nav-links">
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#section-1">Pickle</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
   </nav>
 
   <div id="canvas-container"></div>
 
   <section class="hero" id="hero">
     <h1 class="hero-title">ZENTORA</h1>
-    <p class="hero-subtitle">Artisanal Egg Products</p>
-    <div class="scroll-hint">↓ Scroll to explore ↓</div>
+    <p style="color: #888; margin-top: 10px;">Artisanal Egg Products</p>
+    <div class="scroll-hint">SCROLL TO EXPLORE</div>
   </section>
 
   <section class="section" id="section-1">
     <div class="content-box">
       <h1>Sri Lankan<br>Egg Pickle</h1>
-      <p>Authentic recipe with premium quail eggs and traditional spices.</p>
-      <a href="#" class="cta-button">View Product</a>
+      <p>Authentic recipe with premium quail eggs and traditional spices. A taste of heritage in every bite.</p>
+      <a href="#" class="cta-button">View Details</a>
     </div>
   </section>
 
   <section class="section" id="section-2">
     <div class="content-box right">
       <h1>Egg<br>Chilli Paste</h1>
-      <p>Fiery blend of quail eggs and handpicked chilies. Perfect balance.</p>
-      <a href="#" class="cta-button">View Product</a>
+      <p>Fiery blend of quail eggs and handpicked chilies. Perfect balance of heat and savory richness.</p>
+      <a href="#" class="cta-button">View Details</a>
     </div>
   </section>
 
   <section class="section" id="section-3">
     <div class="content-box">
       <h1>Mexican<br>Egg Pickle</h1>
-      <p>International fusion with jalapeños and aromatic herbs.</p>
-      <a href="#" class="cta-button">View Product</a>
+      <p>International fusion with jalapeños and aromatic herbs. Crafted for the global gourmet palate.</p>
+      <a href="#" class="cta-button">View Details</a>
     </div>
   </section>
 
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // === Three.js Scene Setup ===
+    // === Three.js Setup ===
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
-
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
     camera.position.z = 8;
 
     const textureLoader = new THREE.TextureLoader();
@@ -260,13 +129,14 @@
       { url: 'mexican-pickle.jpg', x: 4 }
     ];
 
-    // Load Products
+    // Load and Setup Animations
     productData.forEach((data, i) => {
       textureLoader.load(data.url, (texture) => {
         const geometry = new THREE.PlaneGeometry(3, 3);
         const material = new THREE.MeshStandardMaterial({ 
           map: texture, 
-          transparent: true,
+          transparent: true, 
+          opacity: 0.3, // Default state
           side: THREE.DoubleSide 
         });
         const mesh = new THREE.Mesh(geometry, material);
@@ -274,82 +144,66 @@
         scene.add(mesh);
         products[i] = mesh;
 
-        // --- GSAP Scroll Animations for Each Product ---
         const triggerID = `#section-${i + 1}`;
         
-        // 1. Position & Scale Animation
-        gsap.to(mesh.position, {
+        // Timeline for Entry and Exit
+        const tl = gsap.timeline({
           scrollTrigger: {
             trigger: triggerID,
-            start: "top bottom",
-            end: "top center",
-            scrub: 1
-          },
-          x: 0,
-          y: 0,
-          z: 4 // ලොකු වෙලා පේන්න ඉස්සරහට එනවා
-        });
-
-        gsap.to(mesh.scale, {
-          scrollTrigger: {
-            trigger: triggerID,
-            start: "top bottom",
-            end: "top center",
-            scrub: 1
-          },
-          x: 2.5, y: 2.5, z: 2.5 // Product එක ලොකු වෙනවා
-        });
-
-        // 2. Focus/Opacity Animation
-        // Focus වෙන section එකේදී image එක පෙනෙන්නත්, අනිත් වෙලාවට මැකී යන්නත් (Opacity)
-        gsap.fromTo(mesh.material, 
-          { opacity: 0.2 }, 
-          {
-            scrollTrigger: {
-              trigger: triggerID,
-              start: "top center",
-              end: "bottom center",
-              scrub: 1,
-              toggleActions: "play reverse play reverse"
-            },
-            opacity: 1
+            start: "top bottom", // ලඟට එනකොට පටන් ගන්න
+            end: "bottom top",   // පසු කරලා යනකොට ඉවර කරන්න
+            scrub: 1,
           }
-        );
+        });
+
+        // මැදට එන animation එක
+        tl.to(mesh.position, { x: 0, y: 0, z: 4, ease: "none" })
+          .to(mesh.scale, { x: 2.2, y: 2.2, z: 1, ease: "none" }, 0)
+          .to(mesh.material, { opacity: 1, ease: "none" }, 0);
+
+        // Section එකෙන් එලියට යනකොට ආපහු තිබුණ තැනටම යන (Exit) animation එක
+        // මේක ස්වයංක්‍රීයව scrub හරහා සිද්ධ වෙනවා
       });
     });
 
-    // === Animation Loop (Floating Effect) ===
+    // === Global Animation Loop ===
     function animate() {
       requestAnimationFrame(animate);
       const time = Date.now() * 0.001;
 
       products.forEach((mesh, i) => {
         if (mesh) {
-          mesh.position.y += Math.sin(time + i) * 0.002; // හෙමින් පාවෙන ගතිය
-          mesh.rotation.y = Math.sin(time * 0.5) * 0.1; // පොඩි පැත්තකට හැරීමක්
+          // Floating effect (සැමවිටම වැඩ කරයි)
+          mesh.position.y += Math.sin(time + i) * 0.002;
+          mesh.rotation.y = Math.sin(time * 0.5) * 0.08;
         }
       });
-
       renderer.render(scene, camera);
     }
     animate();
 
-    // === UI Animations ===
+    // === UI Reveal ===
     window.onload = () => {
-      gsap.to('#loader', { opacity: 0, duration: 1, onComplete: () => document.getElementById('loader').remove() });
-      gsap.to('.hero-title', { opacity: 1, y: 0, delay: 1 });
-      gsap.to('.hero-subtitle', { opacity: 1, y: 0, delay: 1.2 });
+      gsap.to('#loader', { opacity: 0, duration: 0.8, onComplete: () => document.getElementById('loader').remove() });
+      gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1, delay: 0.5 });
     };
 
-    // Content Box reveal
+    // Content Box reveal logic
     gsap.utils.toArray('.content-box').forEach(box => {
       gsap.to(box, {
-        scrollTrigger: { trigger: box, start: "top 80%", scrub: 1 },
+        scrollTrigger: {
+          trigger: box,
+          start: "top 85%",
+          end: "top 30%",
+          scrub: 1,
+          toggleActions: "play reverse play reverse"
+        },
         opacity: 1,
         x: 0
       });
     });
 
+    // Resize handler
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
