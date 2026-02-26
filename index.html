@@ -9,12 +9,12 @@
     :root {
       --gold: #d4af37;
       --black: #050505;
-      --glass: rgba(0, 0, 0, 0.6);
+      --glass: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
     
-    /* Changed height to min-height to allow content expansion on mobile */
     html, body { min-height: 100%; background: #000; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
     a { color: inherit; text-decoration: none; }
 
@@ -25,21 +25,19 @@
       z-index: 10;
       overflow-y: auto;
       overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
+      perspective: 1200px; /* Essential for 3D depth */
     }
 
     .bg-overlay {
       position: fixed;
-      inset: 0;
+      inset: -50px;
       background-image: url('Screenshot 2025-12-17 212954.png');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       z-index: -1;
       animation: kenBurns 20s infinite alternate ease-in-out;
-      will-change: transform;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
+      filter: brightness(0.4);
     }
 
     .bg-overlay::after {
@@ -59,8 +57,8 @@
 
     .logo {
       display: flex; align-items: center; gap: 10px; cursor: pointer;
-      background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 10px;
-      backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--glass); padding: 8px 12px; border-radius: 10px;
+      backdrop-filter: blur(15px); border: 1px solid var(--border);
       transition: 0.3s;
     }
     .logo:hover { border-color: var(--gold); background: rgba(255, 255, 255, 0.1); }
@@ -69,26 +67,48 @@
     .logo .text .sub { font-size: 10px; opacity: 0.8; }
 
     .menu-row {
-      position: relative; z-index: 20; display: flex; gap: 20px;
-      width: 95%; max-width: 1200px; justify-content: center; flex-wrap: wrap; padding: 20px;
+      position: relative; z-index: 20; display: flex; gap: 30px;
+      width: 95%; max-width: 1250px; justify-content: center; flex-wrap: wrap; padding: 20px;
+      transform-style: preserve-3d;
     }
 
     .menu-item {
-      flex: 1; min-width: 250px; max-width: 300px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.4));
-      border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px);
-      border-radius: 18px; padding: 15px; text-align: center; cursor: pointer;
-      transition: 0.4s cubic-bezier(.2, .9, .3, 1);
+      flex: 1; min-width: 260px; max-width: 300px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+      border: 1px solid var(--border); backdrop-filter: blur(12px);
+      border-radius: 20px; padding: 25px; text-align: center; cursor: pointer;
+      transition: transform 0.1s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+      transform-style: preserve-3d; /* Important for layered 3D */
+      will-change: transform;
     }
-    .menu-item:hover { transform: translateY(-10px) scale(1.02); border-color: var(--gold); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2); }
-    .box-image { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; transition: 0.5s; }
-    .menu-item:hover .box-image { transform: scale(1.05); }
-    .menu-item h3 { color: var(--gold); margin-bottom: 8px; font-size: 1.1rem; }
-    .menu-item p { font-size: 12px; color: #ddd; line-height: 1.4; }
+
+    .menu-item:hover { 
+      border-color: var(--gold); 
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* 3D Content Layers */
+    .box-image { 
+      width: 100%; height: 170px; object-fit: cover; border-radius: 12px; 
+      margin-bottom: 15px; 
+      transition: 0.5s cubic-bezier(.2, .9, .3, 1);
+      transform: translateZ(30px); /* Lifts image off the card */
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    
+    .menu-item h3 { 
+        color: var(--gold); margin-bottom: 8px; font-size: 1.2rem; 
+        transform: translateZ(50px); /* Lifts text even higher */
+    }
+    
+    .menu-item p { 
+        font-size: 13px; color: #ccc; line-height: 1.4; 
+        transform: translateZ(40px);
+    }
 
     .contact-fab {
       position: fixed; right: 25px; bottom: 25px; background: var(--gold); color: #000;
-      padding: 12px 24px; border-radius: 50px; font-weight: 700; z-index: 40; cursor: pointer;
+      padding: 14px 28px; border-radius: 50px; font-weight: 700; z-index: 40; cursor: pointer;
       box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
       animation: pulse 2s infinite;
       transition: 0.3s;
@@ -100,25 +120,19 @@
       100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
     }
 
-    /* --- Enhanced Page Structure with Zoom --- */
+    /* --- Page Structure --- */
     .page { 
-      position: fixed; 
-      inset: 0; 
-      overflow-y: auto; 
-      display: none; 
-      background: #060606; 
-      color: #fff; 
-      padding-bottom: 60px; 
-      z-index: 1000;
-      transform: scale(0);
+      position: fixed; inset: 0; overflow-y: auto; display: none; 
+      background: radial-gradient(circle at center, #111 0%, #000 100%); 
+      color: #fff; padding-bottom: 60px; z-index: 1000;
+      transform: scale(0.9) translateY(20px);
       opacity: 0;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-      -webkit-overflow-scrolling: touch;
     }
     
     .page.active { 
       display: block; 
-      transform: scale(1);
+      transform: scale(1) translateY(0);
       opacity: 1;
     }
 
@@ -134,47 +148,26 @@
     .col-right { width: 350px; }
     
     .panel { 
-      background: rgba(255, 255, 255, 0.04); padding: 20px; border-radius: 15px; 
+      background: rgba(255, 255, 255, 0.04); padding: 25px; border-radius: 18px; 
       margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
-      animation: fadeIn 0.8s ease both;
     }
     
-    h1 { font-size: 28px; color: var(--gold); margin-bottom: 15px; }
+    h1 { font-size: 32px; color: var(--gold); margin-bottom: 15px; }
     h2 { font-size: 18px; color: var(--gold); margin-bottom: 10px; border-left: 3px solid var(--gold); padding-left: 10px; }
     p { line-height: 1.6; color: #ccc; margin-bottom: 15px; font-size: 14px; }
-    .lead { font-size: 16px; color: #fff; font-weight: 300; margin-bottom: 25px; animation: fadeIn 0.6s ease both; }
     
-    ul { margin-left: 5px; margin-bottom: 15px; list-style: none; }
-    li { margin-bottom: 10px; color: #ccc; font-size: 14px; position: relative; padding-left: 20px; }
-    li::before { content: "•"; color: var(--gold); position: absolute; left: 0; font-weight: bold; }
-    
-    .hero-img { width: 100%; border-radius: 15px; object-fit: cover; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: 0.8s cubic-bezier(0.2, 0.9, 0.3, 1); }
-    .hero-img:hover { transform: scale(1.03); }
+    .hero-img { width: 100%; border-radius: 15px; object-fit: cover; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
 
-    table { width:100%; border-collapse: collapse; margin-top:10px; color:#ddd; font-size:14px; }
-    table th { text-align:left; padding:10px; color:var(--gold); border-bottom:1px solid rgba(212,175,55,0.3); font-size:12px; text-transform: uppercase; }
-    table td { padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    table { width:100%; border-collapse: collapse; margin-top:10px; color:#ddd; }
+    table th { text-align:left; padding:12px; color:var(--gold); border-bottom:1px solid rgba(212,175,55,0.3); font-size:12px; text-transform: uppercase; }
+    table td { padding:12px; border-bottom:1px solid rgba(255,255,255,0.05); font-size:14px; }
 
     @media (max-width: 900px) {
-      .landing { 
-        position: absolute; /* Changed from fixed to absolute for mobile scroll */
-        height: auto;
-        min-height: 100vh;
-        align-items: flex-start; 
-        padding-top: 110px; 
-        overflow-y: visible; /* Let the body handle the scroll */
-      }
-      .menu-row { flex-direction: column; align-items: center; padding-bottom: 120px; }
-      .menu-item { width: 90%; max-width: none; min-width: unset; }
+      .landing { position: absolute; height: auto; min-height: 100vh; padding-top: 100px; }
+      .menu-row { flex-direction: column; align-items: center; padding-bottom: 100px; }
+      .menu-item { width: 90%; max-width: none; }
       .container { flex-direction: column; }
       .col-right { width: 100%; order: -1; }
-      .topbar { width: 100%; display: flex; justify-content: center; left: 0; }
-      
-      .bg-overlay {
-        position: fixed;
-        background-attachment: scroll;
-        height: 100%;
-      }
     }
 
     .fade { animation: fadeIn 0.8s ease both; }
@@ -232,185 +225,88 @@
     </div>
     <div class="container">
       <div class="col-left">
-        <h1>Quail Eggs — Benefits & Product Details</h1>
-        <p class="lead">Quail eggs are a nutrient-dense specialty product with growing demand in gourmet, health and hospitality markets. We supply carefully graded, cleaned and packed eggs for global clients.</p>
+        <h1>Quail Eggs — Benefits</h1>
         <div class="panel">
           <h2>Nutritional Highlights</h2>
           <table>
             <tr><th>Nutrient Group</th><th>Impact & Details</th></tr>
-            <tr><td><strong>Vitamins</strong></td><td>Rich in A, B12, Riboflavin (B2), Niacin, and Pantothenic acid.</td></tr>
-            <tr><td><strong>Minerals</strong></td><td>Iron, Phosphorus, Selenium for oxygen transport & immunity.</td></tr>
-            <tr><td><strong>Protein</strong></td><td>High biological-value with balanced essential amino-acids.</td></tr>
-            <tr><td><strong>Fats</strong></td><td>Beneficial fatty acids with low per-serving caloric load.</td></tr>
+            <tr><td><strong>Vitamins</strong></td><td>Rich in A, B12, Riboflavin (B2).</td></tr>
+            <tr><td><strong>Minerals</strong></td><td>Iron, Phosphorus, Selenium.</td></tr>
+            <tr><td><strong>Protein</strong></td><td>High biological-value amino-acids.</td></tr>
           </table>
         </div>
         <div class="panel">
           <h2>Health Benefits</h2>
-          <ul>
-            <li><strong>Boosts Immunity:</strong> Antioxidants and selenium support immune health.</li>
-            <li><strong>Improves Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
-            <li><strong>Brain Function:</strong> B12 and choline support neurotransmitter synthesis.</li>
-            <li><strong>Skin & Hair:</strong> Essential nutrients aid cellular repair and maintenance.</li>
-            <li><strong>Allergy Management:</strong> Contains ovomucoid proteins studied for anti-allergenic effects.</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <h2>Packaging & Export Options</h2>
-          <ul>
-            <li>Retail packs (packs of 10) in recyclable clamshells.</li>
-            <li>Bulk packaging for foodservice — hygienic cartons with temperature control.</li>
-            <li>Private label and OEM packaging available for large buyers.</li>
-            <li>Chilled chain logistics coordination for regional exports.</li>
-          </ul>
+          <p>Boosts immunity, improves vision, and supports brain function with essential choline and B12.</p>
         </div>
       </div>
       <div class="col-right">
         <img class="hero-img" src="Quil Egg In.jpeg" alt="quail eggs" />
-        <div class="panel" style="margin-top:20px; border-color:var(--gold)">
-          <h2>Quality & Certifications</h2>
-          <p>We facilitate HACCP-compliant handling, phytosanitary documentation, and lab test certificates on request. Consistent sizing and hygiene ensured.</p>
-        </div>
       </div>
     </div>
   </section>
 
   <section id="cinnamon" class="page">
     <div class="back" onclick="goHome()">
-      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
-      <div style="margin-left:8px">
-        <div style="color:var(--gold);font-weight:700">Ceylon Cinnamon</div>
-        <div style="font-size:12px;color:#ddd">True Ceylon — fragrant, low-coumarin.</div>
-      </div>
+      <img class="logo-mini" src="LOGO.jpg" />
+      <div style="margin-left:8px"><b style="color:var(--gold)">Ceylon Cinnamon</b></div>
     </div>
     <div class="container">
-      <div class="col-left">
-        <h1>Ceylon Cinnamon — Signature Spice</h1>
-        <p class="lead">Ceylon (Cinnamomum verum) is distinct from cassia: it delivers a delicate aroma and lower coumarin levels — making it the premium choice for health-conscious buyers.</p>
-        <div class="panel">
-          <h2>Why Choose Ceylon?</h2>
-          <ul>
-            <li>Authentic botanical variety (Cinnamomum verum) with sweet-spicy notes.</li>
-            <li>Lowest coumarin content; preferred for food & nutraceutical use.</li>
-            <li>Smallholder cultivation with traditional hand-peeling processing.</li>
-            <li>Traceability available with batch-level origin data.</li>
-          </ul>
+        <div class="col-left">
+            <h1>Signature Spice</h1>
+            <div class="panel">
+                <p>Authentic Cinnamomum verum with delicate aroma and the lowest coumarin content in the world.</p>
+            </div>
         </div>
-        <div class="panel">
-          <h2>Applications</h2>
-          <ul>
-            <li>Retail spice jars and premium bakery/confectionery.</li>
-            <li>Essential oils, natural extracts and wellness products.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-right">
-        <img class="hero-img" src="ceylon-cinnamon-sticks-sri-lankan-spices-slofoodgroup-2-oz-552314.jpg" alt="cinnamon" />
-        <div class="panel" style="margin-top:20px">
-          <h2>Packaging & Quality</h2>
-          <p>Hand-graded quills and moisture-controlled packing. We support regulatory documentation for EU and Middle East exports.</p>
-        </div>
-      </div>
+        <div class="col-right"><img class="hero-img" src="ceylon-cinnamon-sticks-sri-lankan-spices-slofoodgroup-2-oz-552314.jpg"></div>
     </div>
   </section>
 
   <section id="spices" class="page">
     <div class="back" onclick="goHome()">
-      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
-      <div style="margin-left:8px">
-        <div style="color:var(--gold);font-weight:700">Native Spices</div>
-        <div style="font-size:12px;color:#ddd">Pepper, Turmeric & native blends.</div>
-      </div>
+      <img class="logo-mini" src="LOGO.jpg" />
+      <div style="margin-left:8px"><b style="color:var(--gold)">Native Spices</b></div>
     </div>
     <div class="container">
-      <div class="col-left">
-        <h1>Sri Lankan Spices — Export Range</h1>
-        <p class="lead">Authentic Sri Lankan flavours sourced and processed for international buyers seeking purity and potency.</p>
-        <div class="panel">
-          <h2>Product Range</h2>
-          <ul>
-            <li><strong>Pepper:</strong> Black pepper (whole & ground) and White pepper.</li>
-            <li><strong>Turmeric:</strong> Dried root and high-curcumin powder.</li>
-            <li><strong>Chilies:</strong> Dried red pods, powder and chili flakes.</li>
-            <li><strong>Others:</strong> Cloves, Cardamom, Fenugreek and dried Curry Leaves.</li>
-            <li>Custom spice blends and private-label mixes available.</li>
-          </ul>
+        <div class="col-left">
+            <h1>Sri Lankan Spices</h1>
+            <div class="panel">
+                <p>Pure Black Pepper, High-curcumin Turmeric, and authentic spice blends sourced directly from farmers.</p>
+            </div>
         </div>
-        <div class="panel">
-          <h2>Quality & Service</h2>
-          <ul>
-            <li>Hygienic cleaning, grading and vacuum packing.</li>
-            <li>COA, samples and full export documentation support.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-right">
-        <img class="hero-img" src="Spicy-Sri-lankan-capsicum-stir-frymalu-miris-banana-peppers-islandsmile.org-4528.jpg" alt="spices" />
-        <div class="panel" style="margin-top:20px">
-          <h2>Markets</h2>
-          <p>We serve Europe, Middle East, Japan and North America, matching specific buyer quality specs.</p>
-        </div>
-      </div>
+        <div class="col-right"><img class="hero-img" src="Spicy-Sri-lankan-capsicum-stir-frymalu-miris-banana-peppers-islandsmile.org-4528.jpg"></div>
     </div>
   </section>
 
   <section id="dryfood" class="page">
     <div class="back" onclick="goHome()">
-      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
-      <div style="margin-left:8px">
-        <div style="color:var(--gold);font-weight:700">Dry Foods</div>
-        <div style="font-size:12px;color:#ddd">Coconut, Cashews & snacks.</div>
-      </div>
+      <img class="logo-mini" src="LOGO.jpg" />
+      <div style="margin-left:8px"><b style="color:var(--gold)">Dry Foods</b></div>
     </div>
     <div class="container">
-      <div class="col-left">
-        <h1>Dry Foods — Export Opportunities</h1>
-        <p class="lead">Sri Lanka's agricultural diversity supports a wide range of dry foods with high international demand.</p>
-        <div class="panel">
-          <h2>Top Export Candidates</h2>
-          <ul>
-            <li><strong>Coconut:</strong> Desiccated coconut and premium coconut chips.</li>
-            <li><strong>Cashews:</strong> Whole kernels, shelled, graded and roasted options.</li>
-            <li><strong>Fruits:</strong> Sliced or freeze-dried Mango, Pineapple and Banana.</li>
-            <li><strong>Snacks:</strong> Roasted nuts and healthy packaged snack mixes.</li>
-          </ul>
+        <div class="col-left">
+            <h1>Export Range</h1>
+            <div class="panel">
+                <p>Premium Desiccated Coconut, Roasted Cashews, and Dried Tropical Fruits processed under strict hygiene.</p>
+            </div>
         </div>
-        <div class="panel">
-          <h2>Services</h2>
-          <ul>
-            <li>Custom retail and bulk packaging (Private Label).</li>
-            <li>Expert export document handling and logistics coordination.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-right">
-        <img class="hero-img" src="dry food.jpg" alt="dry foods" />
-        <div class="panel" style="margin-top:20px">
-          <h2>Why Zentora?</h2>
-          <p>Direct sourcing and consistent quality checks designed for distributors and specialty importers.</p>
-        </div>
-      </div>
+        <div class="col-right"><img class="hero-img" src="dry food.jpg"></div>
     </div>
   </section>
 
   <section id="about" class="page">
     <div class="back" onclick="goHome()">
       <img src="LOGO.jpg" style="width:30px; border-radius:4px;">
-      <div><b style="color:var(--gold)">Zentora Pvt Ltd</b><br><small>Back to Home</small></div>
+      <div style="margin-left:8px"><b style="color:var(--gold)">About Zentora</b></div>
     </div>
     <div class="container">
       <div class="col-left">
         <h1>Company Overview</h1>
-        <p>Established in 2015, Zentora (Private) Limited is a premier Sri Lankan export firm. Built on the principle "Loyalty fuels the future."</p>
         <div class="panel">
-          <h2>Core Information</h2>
           <p><strong>Director:</strong> A.L.G. Sudam Pabasara<br>
-             <strong>Address:</strong> 555/3/A/1, Nedungamuva, Gampaha, Sri Lanka<br>
-             <strong>Phone:</strong> +94 75 439 1779
-          </p>
+             <strong>Address:</strong> 555/3/A/1, Nedungamuva, Gampaha, Sri Lanka</p>
+          <p>"Loyalty fuels the future" — Since 2015.</p>
         </div>
-      </div>
-      <div class="col-right">
-        <img src="Office.png" class="hero-img">
       </div>
     </div>
   </section>
@@ -418,40 +314,56 @@
   <section id="contact" class="page">
     <div class="back" onclick="goHome()">
       <img src="LOGO.jpg" style="width:30px; border-radius:4px;">
-      <div><b style="color:var(--gold)">Contact Us</b><br><small>Get a Quote</small></div>
+      <div style="margin-left:8px"><b style="color:var(--gold)">Contact Us</b></div>
     </div>
     <div class="container">
       <div class="col-left">
-        <h1>Export Inquiries</h1>
+        <h1>Inquiries</h1>
         <div class="panel">
+          <p><strong>WhatsApp:</strong> <a href="https://wa.me/94754391779" style="color:var(--gold)">+94 75 439 1779</a></p>
           <p><strong>Email:</strong> zentora@example.com</p>
-          <p><strong>WhatsApp:</strong> <a href="https://wa.me/94754391779" target="_blank" style="color:var(--gold)">+94 75 439 1779</a></p>
-          <p><strong>Working Hours:</strong> Mon-Fri (8:30 AM - 5:30 PM)</p>
         </div>
-      </div>
-      <div class="col-right">
-        <img src="LOGO.jpg" class="hero-img" style="opacity: 0.3;">
       </div>
     </div>
   </section>
 
   <script>
+    // --- 3D Tilt Effect Logic ---
+    const items = document.querySelectorAll('.menu-item');
+    
+    items.forEach(item => {
+      item.addEventListener('mousemove', (e) => {
+        const rect = item.getBoundingClientRect();
+        const x = e.clientX - rect.left; // x position within element
+        const y = e.clientY - rect.top;  // y position within element
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Calculate rotation (max 15 degrees)
+        const rotateX = (centerY - y) / 10; 
+        const rotateY = (x - centerX) / 10;
+        
+        item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+      });
+      
+      item.addEventListener('mouseleave', () => {
+        item.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
+      });
+    });
+
+    // --- Page Navigation Logic ---
     function openPage(id, element) {
       const target = document.getElementById(id);
       if (!target) return;
 
       const rect = element.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      target.style.transformOrigin = `${centerX}px ${centerY}px`;
+      target.style.transformOrigin = `${rect.left + rect.width/2}px ${rect.top + rect.height/2}px`;
 
       target.style.display = 'block';
       setTimeout(() => {
         target.classList.add('active');
-        // Enable scrolling for the active page
         document.body.style.overflow = 'hidden'; 
-        
         setTimeout(() => {
           if(target.classList.contains('active')) {
             document.getElementById('landing').style.visibility = 'hidden';
@@ -468,18 +380,13 @@
         activePage.classList.remove('active');
         setTimeout(() => {
           activePage.style.display = 'none';
-          // Restore scrolling when returning to home
           document.body.style.overflow = 'auto';
         }, 600);
       }
-      
       window.scrollTo(0, 0);
     }
     
-    // Initial state
-    window.onload = () => {
-        document.body.style.overflow = 'auto';
-    };
+    window.onload = () => { document.body.style.overflow = 'auto'; };
   </script>
 </body>
 </html>
