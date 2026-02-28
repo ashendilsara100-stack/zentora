@@ -13,7 +13,6 @@
 
     <style>
         :root { --gold:#d4af37; }
-
         * { box-sizing:border-box; margin:0; padding:0; font-family:'Inter',sans-serif; }
         body { background:#000; color:#fff; overflow-x:hidden; }
 
@@ -24,111 +23,36 @@
 
         nav {
             position:fixed; top:0; width:100%; z-index:100;
-            padding:20px 5%;
-            display:flex; justify-content:space-between; align-items:center;
-            background:rgba(0,0,0,0.5);
-            backdrop-filter:blur(20px);
+            padding:20px 5%; display:flex; justify-content:space-between; align-items:center;
+            background:rgba(0,0,0,0.5); backdrop-filter:blur(20px);
             border-bottom:1px solid rgba(212,175,55,0.1);
         }
 
         .logo { display:flex; align-items:center; gap:15px; }
         .logo img { width:45px; height:45px; border-radius:8px; border:1px solid var(--gold); }
-        .logo-text {
-            font-family:'Playfair Display',serif;
-            font-size:1.4rem; font-weight:900;
-            color:var(--gold); letter-spacing:2px;
-        }
+        .logo-text { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--gold); letter-spacing:2px; }
 
-        .section {
-            position:relative;
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            padding:0 10%;
-            z-index:2;
-        }
+        .section { position:relative; min-height:100vh; display:flex; align-items:center; padding:0 10%; z-index:2; }
 
-        .hero {
-            height:100vh;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            text-align:center;
-        }
-
-        .hero-title {
-            font-family:'Playfair Display',serif;
-            font-size:clamp(3rem,10vw,6rem);
-            color:var(--gold);
-            opacity:0;
-            transform:translateY(50px);
-        }
-
-        .hero p { max-width:600px; color:#ccc; margin-top:20px; }
+        .hero { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+        .hero-title { font-family:'Playfair Display',serif; font-size:clamp(3rem,10vw,6rem); color:var(--gold); opacity:0; transform:translateY(50px); }
+        .hero p { max-width:600px; color:#ccc; margin-top:20px; z-index: 5; }
 
         .content-box {
-            max-width:420px;
-            background:rgba(0,0,0,0.6);
-            padding:40px;
-            border-radius:20px;
-            border:1px solid rgba(212,175,55,0.2);
-            backdrop-filter:blur(15px);
-            opacity:0;
+            max-width:420px; background:rgba(0,0,0,0.6); padding:40px;
+            border-radius:20px; border:1px solid rgba(212,175,55,0.2);
+            backdrop-filter:blur(15px); opacity:0;
         }
 
-        /* විස්තර පෙට්ටිය වම් පැත්තේ ඇති විට (Default) */
-        #section-1 .content-box, #section-3 .content-box {
-            transform:translateX(-100px);
-        }
+        .content-box.right { margin-left:auto; }
 
-        /* විස්තර පෙට්ටිය දකුණු පැත්තේ ඇති විට */
-        .content-box.right {
-            margin-left:auto;
-            transform:translateX(100px);
-        }
+        h1 { font-family:'Playfair Display',serif; color:var(--gold); font-size:2.5rem; margin-bottom:20px; }
+        p { line-height:1.7; color:#ddd; margin-bottom:25px; }
+        .cta-button { display:inline-block; padding:12px 25px; border:1px solid var(--gold); color:var(--gold); text-decoration:none; transition:0.3s; border-radius:5px; }
+        .cta-button:hover { background:var(--gold); color:#000; }
 
-        h1 {
-            font-family:'Playfair Display',serif;
-            color:var(--gold);
-            font-size:2.5rem;
-            margin-bottom:20px;
-            line-height:1.2;
-        }
-
-        p { line-height:1.7; color:#ddd; margin-bottom:25px; font-size:1.05rem; }
-
-        .cta-button {
-            display: inline-block;
-            padding: 12px 25px;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            text-decoration: none;
-            transition: 0.3s;
-            font-weight: 600;
-            border-radius: 5px;
-        }
-
-        .cta-button:hover {
-            background: var(--gold);
-            color: #000;
-        }
-
-        .scroll-hint {
-            position:absolute; bottom:30px; left:50%;
-            transform:translateX(-50%);
-            color:var(--gold); font-size:0.8rem; letter-spacing:2px;
-        }
-
-        #loader {
-            position:fixed; inset:0; background:#000;
-            z-index:10000; display:flex; justify-content:center; align-items:center;
-        }
-
-        .loader-text {
-            font-family:'Playfair Display',serif;
-            font-size:2rem; color:var(--gold); letter-spacing:5px;
-        }
+        #loader { position:fixed; inset:0; background:#000; z-index:10000; display:flex; justify-content:center; align-items:center; }
+        .loader-text { font-family:'Playfair Display',serif; font-size:2rem; color:var(--gold); letter-spacing:5px; }
     </style>
 </head>
 
@@ -147,14 +71,13 @@
 
 <section class="hero">
     <h1 class="hero-title">ZENTORA</h1>
-    <p>Handcrafted gourmet egg creations inspired by Sri Lankan heritage and global flavors.</p>
-    <div class="scroll-hint">SCROLL TO EXPERIENCE</div>
+    <p>Premium Sri Lankan Gourmet Experience</p>
 </section>
 
 <section class="section" id="section-1">
     <div class="content-box">
         <h1>Sri Lankan Heritage</h1>
-        <p>Crafted from a traditional family recipe, our Sri Lankan Egg Pickle blends rich spices with delicate quail eggs.</p>
+        <p>A traditional family recipe blending rich island spices with delicate quail eggs.</p>
         <a href="#" class="cta-button">Discover the Craft</a>
     </div>
 </section>
@@ -162,7 +85,7 @@
 <section class="section" id="section-2">
     <div class="content-box right">
         <h1>Bold Heat</h1>
-        <p>Fire-roasted chilies meet silky quail eggs to create a deep savory heat that elevates every meal.</p>
+        <p>Fire-roasted chilies meet silky eggs to create a deep, savory luxury heat.</p>
         <a href="#" class="cta-button">Experience the Heat</a>
     </div>
 </section>
@@ -170,28 +93,19 @@
 <section class="section" id="section-3">
     <div class="content-box">
         <h1>Global Fusion</h1>
-        <p>Inspired by Mexican flavors, jalapeños and aromatic herbs bring a vibrant international twist.</p>
+        <p>Inspired by Mexican flavors with jalapeños and aromatic local herbs.</p>
         <a href="#" class="cta-button">Explore the Flavor</a>
-    </div>
-</section>
-
-<section class="section" id="section-4">
-    <div class="content-box right">
-        <h1>A Taste Worth Sharing</h1>
-        <p>Zentora isn’t just food — it’s an experience. Crafted for gatherings and unforgettable moments.</p>
-        <a href="#" class="cta-button">Order Now</a>
     </div>
 </section>
 
 <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Three.js Scene Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     document.getElementById('canvas-container').appendChild(renderer.domElement);
 
     scene.add(new THREE.AmbientLight(0xffffff, 1.5));
@@ -199,84 +113,81 @@
 
     const textureLoader = new THREE.TextureLoader();
     const products = [];
-    
-    // Config: targetX තීරණය කරන්නේ පින්තූරය පෙනෙන්න ඕන පැත්තයි (දකුණ = 3, වම = -3)
     const productData = [
-        { url: 'sri-lankan-pickle.jpg', targetX: 2.8 }, 
-        { url: 'chilli-paste.jpg', targetX: -2.8 },
-        { url: 'mexican-pickle.jpg', targetX: 2.8 },
-        { url: 'final-image.jpg', targetX: -2.8 }
+        { url: 'sri-lankan-pickle.jpg', initialX: -2.5, targetX: 3 }, // Text Left -> Image Right
+        { url: 'chilli-paste.jpg', initialX: 0, targetX: -3 },       // Text Right -> Image Left
+        { url: 'mexican-pickle.jpg', initialX: 2.5, targetX: 3 }     // Text Left -> Image Right
     ];
 
     productData.forEach((data, i) => {
         textureLoader.load(data.url, (texture) => {
-            const geometry = new THREE.PlaneGeometry(3.5, 4.5);
-            const material = new THREE.MeshStandardMaterial({
-                map: texture,
-                transparent: true,
-                opacity: 0,
-                side: THREE.DoubleSide
-            });
+            const geometry = new THREE.PlaneGeometry(3, 4);
+            const material = new THREE.MeshStandardMaterial({ map: texture, transparent: true, opacity: 0.8 });
             const mesh = new THREE.Mesh(geometry, material);
             
-            // පින්තූරය ආරම්භයේදී තියෙන තැන
-            mesh.position.set(data.targetX, -5, 0); 
+            // මුලින්ම පින්තූර 3ම Hero එකේ පේළියට තියනවා
+            mesh.position.set(data.initialX, -1, 0); 
             scene.add(mesh);
             products[i] = mesh;
 
-            // පින්තූරය ඇතුලට එන Animation එක
+            // Scroll කරන විට සිදුවන වෙනස
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: `#section-${i + 1}`,
-                    start: "top 80%",
-                    end: "top 20%",
+                    start: "top bottom", 
+                    end: "top center",
                     scrub: 1
                 }
             });
 
-            tl.to(mesh.position, { y: 0, z: 2 })
-              .to(mesh.material, { opacity: 1 }, 0);
+            // අදාළ පැත්තට පින්තූරය ගෙන යාම
+            tl.to(mesh.position, {
+                x: data.targetX,
+                y: 0,
+                z: 2
+            })
+            .to(mesh.material, { opacity: 1 }, 0);
 
-            // පින්තූරය පිටතට යන Animation එක (Fade out)
-            gsap.to(mesh.material, {
-                scrollTrigger: {
-                    trigger: `#section-${i + 1}`,
-                    start: "bottom 40%",
-                    end: "bottom top",
-                    scrub: 1
-                },
-                opacity: 0
+            // අනෙක් පින්තූර මැකී යාම (Focus effect)
+            productData.forEach((_, otherIdx) => {
+                if (i !== otherIdx) {
+                    gsap.to(products[otherIdx]?.material || {}, {
+                        scrollTrigger: {
+                            trigger: `#section-${i + 1}`,
+                            start: "top center",
+                            scrub: true
+                        },
+                        opacity: 0.1
+                    });
+                }
             });
         });
     });
 
-    // පින්තූර වලට ජීවී බවක් දීමට (Floating Effect)
     function animate() {
         requestAnimationFrame(animate);
         const time = Date.now() * 0.001;
         products.forEach((mesh, i) => {
             if (mesh) {
                 mesh.position.y += Math.sin(time + i) * 0.003;
-                mesh.rotation.y = Math.sin(time * 0.5) * 0.1;
+                mesh.rotation.y = Math.sin(time * 0.5) * 0.05;
             }
         });
         renderer.render(scene, camera);
     }
     animate();
 
-    // Page Load Animations
     window.onload = () => {
         gsap.to('#loader', { opacity: 0, duration: 0.8, onComplete: () => document.getElementById('loader').remove() });
         gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1, delay: 0.5 });
     };
 
-    // Text Content Animation
-    gsap.utils.toArray('.content-box').forEach(box => {
+    gsap.utils.toArray('.content-box').forEach((box, i) => {
         gsap.to(box, {
             scrollTrigger: {
                 trigger: box,
-                start: "top 85%",
-                end: "top 30%",
+                start: "top 80%",
+                end: "top 40%",
                 scrub: 1
             },
             opacity: 1,
@@ -284,7 +195,6 @@
         });
     });
 
-    // Resize Handler
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
