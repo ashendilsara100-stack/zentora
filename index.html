@@ -1,287 +1,485 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Zentora — Premium Gourmet Experience</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zentora Private Limited — Premium Exports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4af37;
+      --black: #050505;
+      --glass: rgba(0, 0, 0, 0.6);
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    
+    /* Changed height to min-height to allow content expansion on mobile */
+    html, body { min-height: 100%; background: #000; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
+    a { color: inherit; text-decoration: none; }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    /* --- Landing Section --- */
+    .landing {
+      position: fixed; inset: 0; 
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
 
-<style>
-:root { --gold:#d4af37; }
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: url('Screenshot 2025-12-17 212954.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      z-index: -1;
+      animation: kenBurns 20s infinite alternate ease-in-out;
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
-body{background:#000;color:#fff;overflow-x:hidden;}
+    .bg-overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9));
+    }
 
-#canvas-container{
-position:fixed;top:0;left:0;width:100%;height:100vh;
-z-index:1;pointer-events:none;
-}
+    @keyframes kenBurns {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
 
-nav{
-position:fixed;top:0;width:100%;z-index:100;
-padding:20px 5%;
-display:flex;justify-content:space-between;align-items:center;
-background:rgba(0,0,0,0.5);
-backdrop-filter:blur(20px);
-border-bottom:1px solid rgba(212,175,55,0.1);
-}
+    .topbar { position: fixed; left: 20px; top: 20px; display: flex; align-items: center; gap: 12px; z-index: 30; animation: slideInLeft 0.8s ease-out; }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
 
-.logo{display:flex;align-items:center;gap:15px;}
-.logo img{width:45px;height:45px;border-radius:8px;border:1px solid var(--gold);}
-.logo-text{
-font-family:'Playfair Display',serif;
-font-size:1.4rem;font-weight:900;
-color:var(--gold);letter-spacing:2px;
-}
+    .logo {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 10px;
+      backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: 0.3s;
+    }
+    .logo:hover { border-color: var(--gold); background: rgba(255, 255, 255, 0.1); }
+    .logo img, .logo-mini { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; }
+    .logo .text .title { color: var(--gold); font-weight: 700; font-size: 14px; }
+    .logo .text .sub { font-size: 10px; opacity: 0.8; }
 
-.section{
-position:relative;
-min-height:100vh;
-display:flex;
-align-items:center;
-padding:0 10%;
-z-index:2;
-}
+    .menu-row {
+      position: relative; z-index: 20; display: flex; gap: 20px;
+      width: 95%; max-width: 1200px; justify-content: center; flex-wrap: wrap; padding: 20px;
+    }
 
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-}
+    .menu-item {
+      flex: 1; min-width: 250px; max-width: 300px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.4));
+      border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px);
+      border-radius: 18px; padding: 15px; text-align: center; cursor: pointer;
+      transition: 0.4s cubic-bezier(.2, .9, .3, 1);
+    }
+    .menu-item:hover { transform: translateY(-10px) scale(1.02); border-color: var(--gold); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2); }
+    .box-image { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; transition: 0.5s; }
+    .menu-item:hover .box-image { transform: scale(1.05); }
+    .menu-item h3 { color: var(--gold); margin-bottom: 8px; font-size: 1.1rem; }
+    .menu-item p { font-size: 12px; color: #ddd; line-height: 1.4; }
 
-.hero-title{
-font-family:'Playfair Display',serif;
-font-size:clamp(3rem,10vw,6rem);
-color:var(--gold);
-opacity:0;
-transform:translateY(50px);
-}
+    .contact-fab {
+      position: fixed; right: 25px; bottom: 25px; background: var(--gold); color: #000;
+      padding: 12px 24px; border-radius: 50px; font-weight: 700; z-index: 40; cursor: pointer;
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+      animation: pulse 2s infinite;
+      transition: 0.3s;
+    }
+    .contact-fab:hover { transform: scale(1.1); background: #fff; }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
+      70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+    }
 
-.content-box{
-max-width:420px;
-background:rgba(0,0,0,0.55);
-padding:40px;
-border-radius:30px;
-border:1px solid rgba(212,175,55,0.2);
-backdrop-filter:blur(12px);
-opacity:0;
-transform:translateX(-80px);
-transition: transform 0.1s ease;
-}
+    /* --- Enhanced Page Structure with Zoom --- */
+    .page { 
+      position: fixed; 
+      inset: 0; 
+      overflow-y: auto; 
+      display: none; 
+      background: #060606; 
+      color: #fff; 
+      padding-bottom: 60px; 
+      z-index: 1000;
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .page.active { 
+      display: block; 
+      transform: scale(1);
+      opacity: 1;
+    }
 
-.content-box.right{
-margin-left:auto;
-transform:translateX(80px);
-}
+    .page .back {
+      position: sticky; top: 0; width: 100%; background: rgba(6, 6, 6, 0.95);
+      backdrop-filter: blur(10px); padding: 15px 25px; z-index: 200;
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
 
-h1{
-font-family:'Playfair Display',serif;
-color:var(--gold);
-font-size:2.8rem;
-margin-bottom:20px;
-line-height:1.2;
-}
+    .container { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; }
+    .col-left { flex: 1; }
+    .col-right { width: 350px; }
+    
+    .panel { 
+      background: rgba(255, 255, 255, 0.04); padding: 20px; border-radius: 15px; 
+      margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
+      animation: fadeIn 0.8s ease both;
+    }
+    
+    h1 { font-size: 28px; color: var(--gold); margin-bottom: 15px; }
+    h2 { font-size: 18px; color: var(--gold); margin-bottom: 10px; border-left: 3px solid var(--gold); padding-left: 10px; }
+    p { line-height: 1.6; color: #ccc; margin-bottom: 15px; font-size: 14px; }
+    .lead { font-size: 16px; color: #fff; font-weight: 300; margin-bottom: 25px; animation: fadeIn 0.6s ease both; }
+    
+    ul { margin-left: 5px; margin-bottom: 15px; list-style: none; }
+    li { margin-bottom: 10px; color: #ccc; font-size: 14px; position: relative; padding-left: 20px; }
+    li::before { content: "•"; color: var(--gold); position: absolute; left: 0; font-weight: bold; }
+    
+    .hero-img { width: 100%; border-radius: 15px; object-fit: cover; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: 0.8s cubic-bezier(0.2, 0.9, 0.3, 1); }
+    .hero-img:hover { transform: scale(1.03); }
 
-p{
-line-height:1.7;
-color:#ddd;
-margin-bottom:25px;
-font-size:1.05rem;
-}
+    table { width:100%; border-collapse: collapse; margin-top:10px; color:#ddd; font-size:14px; }
+    table th { text-align:left; padding:10px; color:var(--gold); border-bottom:1px solid rgba(212,175,55,0.3); font-size:12px; text-transform: uppercase; }
+    table td { padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); }
 
-.cta-button{
-display: inline-block;
-padding: 12px 28px;
-border: 1px solid var(--gold);
-color: var(--gold);
-text-decoration: none;
-font-weight: 600;
-border-radius: 50px;
-transition: 0.3s;
-}
+    @media (max-width: 900px) {
+      .landing { 
+        position: absolute; /* Changed from fixed to absolute for mobile scroll */
+        height: auto;
+        min-height: 100vh;
+        align-items: flex-start; 
+        padding-top: 110px; 
+        overflow-y: visible; /* Let the body handle the scroll */
+      }
+      .menu-row { flex-direction: column; align-items: center; padding-bottom: 120px; }
+      .menu-item { width: 90%; max-width: none; min-width: unset; }
+      .container { flex-direction: column; }
+      .col-right { width: 100%; order: -1; }
+      .topbar { width: 100%; display: flex; justify-content: center; left: 0; }
+      
+      .bg-overlay {
+        position: fixed;
+        background-attachment: scroll;
+        height: 100%;
+      }
+    }
 
-.cta-button:hover{
-background: var(--gold);
-color: #000;
-box-shadow: 0 0 20px rgba(212,175,55,0.4);
-}
-
-#loader{
-position:fixed;inset:0;
-background:#000;
-z-index:10000;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.loader-text{
-font-family:'Playfair Display',serif;
-font-size:2rem;
-color:var(--gold);
-letter-spacing:5px;
-}
-</style>
+    .fade { animation: fadeIn 0.8s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
 </head>
-
 <body>
 
-<div id="loader"><div class="loader-text">ZENTORA</div></div>
+  <section class="landing" id="landing">
+    <div class="bg-overlay"></div>
 
-<nav>
-<div class="logo">
-<img src="LOGO.jpg"/>
-<div class="logo-text">ZENTORA</div>
-</div>
-</nav>
+    <div class="topbar">
+      <div class="logo" onclick="openPage('about', this)">
+        <img src="LOGO.jpg" alt="Zentora Logo" />
+        <div class="text">
+          <div class="title">Zentora Private Limited</div>
+          <div class="sub">Premium Natural Exports — Sri Lanka</div>
+        </div>
+      </div>
+    </div>
 
-<div id="canvas-container"></div>
+    <div class="menu-row">
+      <div class="menu-item fade" style="animation-delay: 0.1s" onclick="openPage('quail', this)">
+        <img src="Quil Eggs Im1.jpg" alt="Quail Eggs" class="box-image">
+        <h3>Quail Eggs</h3>
+        <p>Nutrient-dense, export-ready specialty eggs.</p>
+      </div>
+      <div class="menu-item fade" style="animation-delay: 0.2s" onclick="openPage('cinnamon', this)">
+        <img src="cinnamon home.jpg" alt="Cinnamon" class="box-image">
+        <h3>Ceylon Cinnamon</h3>
+        <p>Fragrant, low-coumarin "True" Cinnamon.</p>
+      </div>
+      <div class="menu-item fade" style="animation-delay: 0.3s" onclick="openPage('spices', this)">
+        <img src="spice home.jpg" alt="Spices" class="box-image">
+        <h3>Native Spices</h3>
+        <p>Premium Pepper, Turmeric and native blends.</p>
+      </div>
+      <div class="menu-item fade" style="animation-delay: 0.4s" onclick="openPage('dryfood', this)">
+        <img src="dry food.jpg" alt="Dry Foods" class="box-image">
+        <h3>Dry Foods</h3>
+        <p>Coconut products, Cashews and dried fruits.</p>
+      </div>
+    </div>
 
-<section class="hero">
-<h1 class="hero-title">ZENTORA</h1>
-<p style="color:#ccc; margin-top:10px;">Gourmet Heritage. Global Flavor.</p>
-</section>
+    <div class="contact-fab" onclick="openPage('contact', this)">Contact Us</div>
+  </section>
 
-<section class="section" id="section-1">
-<div class="content-box">
-<h1>Sri Lankan Heritage</h1>
-<p>Crafted from a traditional family recipe, our Sri Lankan Egg Pickle blends rich spices with delicate quail eggs.</p>
-<a href="#" class="cta-button">Discover the Craft</a>
-</div>
-</section>
+  <section id="quail" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Quail Eggs</div>
+        <div style="font-size:12px;color:#ddd">Trusted, nutrient-dense, export-ready.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Quail Eggs — Benefits & Product Details</h1>
+        <p class="lead">Quail eggs are a nutrient-dense specialty product with growing demand in gourmet, health and hospitality markets. We supply carefully graded, cleaned and packed eggs for global clients.</p>
+        <div class="panel">
+          <h2>Nutritional Highlights</h2>
+          <table>
+            <tr><th>Nutrient Group</th><th>Impact & Details</th></tr>
+            <tr><td><strong>Vitamins</strong></td><td>Rich in A, B12, Riboflavin (B2), Niacin, and Pantothenic acid.</td></tr>
+            <tr><td><strong>Minerals</strong></td><td>Iron, Phosphorus, Selenium for oxygen transport & immunity.</td></tr>
+            <tr><td><strong>Protein</strong></td><td>High biological-value with balanced essential amino-acids.</td></tr>
+            <tr><td><strong>Fats</strong></td><td>Beneficial fatty acids with low per-serving caloric load.</td></tr>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Health Benefits</h2>
+          <ul>
+            <li><strong>Boosts Immunity:</strong> Antioxidants and selenium support immune health.</li>
+            <li><strong>Improves Vision:</strong> Vitamin A helps maintain night vision and photoreceptor function.</li>
+            <li><strong>Brain Function:</strong> B12 and choline support neurotransmitter synthesis.</li>
+            <li><strong>Skin & Hair:</strong> Essential nutrients aid cellular repair and maintenance.</li>
+            <li><strong>Allergy Management:</strong> Contains ovomucoid proteins studied for anti-allergenic effects.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Packaging & Export Options</h2>
+          <ul>
+            <li>Retail packs (packs of 10) in recyclable clamshells.</li>
+            <li>Bulk packaging for foodservice — hygienic cartons with temperature control.</li>
+            <li>Private label and OEM packaging available for large buyers.</li>
+            <li>Chilled chain logistics coordination for regional exports.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="Quil Egg In.jpeg" alt="quail eggs" />
+        <div class="panel" style="margin-top:20px; border-color:var(--gold)">
+          <h2>Quality & Certifications</h2>
+          <p>We facilitate HACCP-compliant handling, phytosanitary documentation, and lab test certificates on request. Consistent sizing and hygiene ensured.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section class="section" id="section-2">
-<div class="content-box right">
-<h1>Bold Heat</h1>
-<p>Fire-roasted chilies meet silky quail eggs to create a deep savory heat that elevates every meal.</p>
-<a href="#" class="cta-button">Experience the Heat</a>
-</div>
-</section>
+  <section id="cinnamon" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Ceylon Cinnamon</div>
+        <div style="font-size:12px;color:#ddd">True Ceylon — fragrant, low-coumarin.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Ceylon Cinnamon — Signature Spice</h1>
+        <p class="lead">Ceylon (Cinnamomum verum) is distinct from cassia: it delivers a delicate aroma and lower coumarin levels — making it the premium choice for health-conscious buyers.</p>
+        <div class="panel">
+          <h2>Why Choose Ceylon?</h2>
+          <ul>
+            <li>Authentic botanical variety (Cinnamomum verum) with sweet-spicy notes.</li>
+            <li>Lowest coumarin content; preferred for food & nutraceutical use.</li>
+            <li>Smallholder cultivation with traditional hand-peeling processing.</li>
+            <li>Traceability available with batch-level origin data.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Applications</h2>
+          <ul>
+            <li>Retail spice jars and premium bakery/confectionery.</li>
+            <li>Essential oils, natural extracts and wellness products.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="ceylon-cinnamon-sticks-sri-lankan-spices-slofoodgroup-2-oz-552314.jpg" alt="cinnamon" />
+        <div class="panel" style="margin-top:20px">
+          <h2>Packaging & Quality</h2>
+          <p>Hand-graded quills and moisture-controlled packing. We support regulatory documentation for EU and Middle East exports.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section class="section" id="section-3">
-<div class="content-box">
-<h1>Global Fusion</h1>
-<p>Inspired by Mexican flavors, jalapeños and aromatic herbs bring a vibrant international twist.</p>
-<a href="#" class="cta-button">Explore the Flavor</a>
-</div>
-</section>
+  <section id="spices" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Native Spices</div>
+        <div style="font-size:12px;color:#ddd">Pepper, Turmeric & native blends.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Sri Lankan Spices — Export Range</h1>
+        <p class="lead">Authentic Sri Lankan flavours sourced and processed for international buyers seeking purity and potency.</p>
+        <div class="panel">
+          <h2>Product Range</h2>
+          <ul>
+            <li><strong>Pepper:</strong> Black pepper (whole & ground) and White pepper.</li>
+            <li><strong>Turmeric:</strong> Dried root and high-curcumin powder.</li>
+            <li><strong>Chilies:</strong> Dried red pods, powder and chili flakes.</li>
+            <li><strong>Others:</strong> Cloves, Cardamom, Fenugreek and dried Curry Leaves.</li>
+            <li>Custom spice blends and private-label mixes available.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Quality & Service</h2>
+          <ul>
+            <li>Hygienic cleaning, grading and vacuum packing.</li>
+            <li>COA, samples and full export documentation support.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="Spicy-Sri-lankan-capsicum-stir-frymalu-miris-banana-peppers-islandsmile.org-4528.jpg" alt="spices" />
+        <div class="panel" style="margin-top:20px">
+          <h2>Markets</h2>
+          <p>We serve Europe, Middle East, Japan and North America, matching specific buyer quality specs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section class="section" id="section-4">
-<div class="content-box right">
-<h1>Taste Excellence</h1>
-<p>Zentora isn’t just food — it’s an experience crafted for unforgettable moments.</p>
-<a href="#" class="cta-button">Order Now</a>
-</div>
-</section>
+  <section id="dryfood" class="page">
+    <div class="back" onclick="goHome()">
+      <img class="logo-mini" src="LOGO.jpg" alt="logo" />
+      <div style="margin-left:8px">
+        <div style="color:var(--gold);font-weight:700">Dry Foods</div>
+        <div style="font-size:12px;color:#ddd">Coconut, Cashews & snacks.</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Dry Foods — Export Opportunities</h1>
+        <p class="lead">Sri Lanka's agricultural diversity supports a wide range of dry foods with high international demand.</p>
+        <div class="panel">
+          <h2>Top Export Candidates</h2>
+          <ul>
+            <li><strong>Coconut:</strong> Desiccated coconut and premium coconut chips.</li>
+            <li><strong>Cashews:</strong> Whole kernels, shelled, graded and roasted options.</li>
+            <li><strong>Fruits:</strong> Sliced or freeze-dried Mango, Pineapple and Banana.</li>
+            <li><strong>Snacks:</strong> Roasted nuts and healthy packaged snack mixes.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Services</h2>
+          <ul>
+            <li>Custom retail and bulk packaging (Private Label).</li>
+            <li>Expert export document handling and logistics coordination.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <img class="hero-img" src="dry food.jpg" alt="dry foods" />
+        <div class="panel" style="margin-top:20px">
+          <h2>Why Zentora?</h2>
+          <p>Direct sourcing and consistent quality checks designed for distributors and specialty importers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
-gsap.registerPlugin(ScrollTrigger);
+  <section id="about" class="page">
+    <div class="back" onclick="goHome()">
+      <img src="LOGO.jpg" style="width:30px; border-radius:4px;">
+      <div><b style="color:var(--gold)">Zentora Pvt Ltd</b><br><small>Back to Home</small></div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Company Overview</h1>
+        <p>Established in 2015, Zentora (Private) Limited is a premier Sri Lankan export firm. Built on the principle "Loyalty fuels the future."</p>
+        <div class="panel">
+          <h2>Core Information</h2>
+          <p><strong>Director:</strong> A.L.G. Sudam Pabasara<br>
+             <strong>Address:</strong> 555/3/A/1, Nedungamuva, Gampaha, Sri Lanka<br>
+             <strong>Phone:</strong> +94 75 439 1779
+          </p>
+        </div>
+      </div>
+      <div class="col-right">
+        <img src="Office.png" class="hero-img">
+      </div>
+    </div>
+  </section>
 
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-renderer.setSize(window.innerWidth,window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-document.getElementById('canvas-container').appendChild(renderer.domElement);
+  <section id="contact" class="page">
+    <div class="back" onclick="goHome()">
+      <img src="LOGO.jpg" style="width:30px; border-radius:4px;">
+      <div><b style="color:var(--gold)">Contact Us</b><br><small>Get a Quote</small></div>
+    </div>
+    <div class="container">
+      <div class="col-left">
+        <h1>Export Inquiries</h1>
+        <div class="panel">
+          <p><strong>Email:</strong> zentora@example.com</p>
+          <p><strong>WhatsApp:</strong> <a href="https://wa.me/94754391779" target="_blank" style="color:var(--gold)">+94 75 439 1779</a></p>
+          <p><strong>Working Hours:</strong> Mon-Fri (8:30 AM - 5:30 PM)</p>
+        </div>
+      </div>
+      <div class="col-right">
+        <img src="LOGO.jpg" class="hero-img" style="opacity: 0.3;">
+      </div>
+    </div>
+  </section>
 
-scene.add(new THREE.AmbientLight(0xffffff,1.5));
-camera.position.z=10;
+  <script>
+    function openPage(id, element) {
+      const target = document.getElementById(id);
+      if (!target) return;
 
-const textureLoader=new THREE.TextureLoader();
-const products=[];
-const productData=[
-{url:'sri-lankan-pickle.jpg', xStart:-3.5, xEnd:3.5, section:'#section-1'},
-{url:'chilli-paste.jpg', xStart:0, xEnd:-3.5, section:'#section-2'},
-{url:'mexican-pickle.jpg', xStart:3.5, xEnd:3.5, section:'#section-3'}
-];
+      const rect = element.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-productData.forEach((data,i)=>{
-textureLoader.load(data.url,(texture)=>{
-const geometry=new THREE.PlaneGeometry(3,4);
-const material=new THREE.MeshStandardMaterial({
-map:texture,
-transparent:true,
-opacity:0.8,
-side:THREE.DoubleSide
-});
-const mesh=new THREE.Mesh(geometry,material);
-mesh.position.set(data.xStart, -0.5, 0); // Hero section එකේ පිහිටීම
-scene.add(mesh);
-products[i]=mesh;
+      target.style.transformOrigin = `${centerX}px ${centerY}px`;
 
-// Product එක වෙන් වී යන Animation එක
-const tl=gsap.timeline({
-scrollTrigger:{
-trigger: data.section,
-start:"top bottom",
-end:"top center",
-scrub:1
-}
-});
+      target.style.display = 'block';
+      setTimeout(() => {
+        target.classList.add('active');
+        // Enable scrolling for the active page
+        document.body.style.overflow = 'hidden'; 
+        
+        setTimeout(() => {
+          if(target.classList.contains('active')) {
+            document.getElementById('landing').style.visibility = 'hidden';
+          }
+        }, 600);
+      }, 10);
+    }
 
-tl.to(mesh.position, {x: data.xEnd, y: 0, z: 2})
-  .to(mesh.scale, {x: 1.2, y: 1.2}, 0)
-  .to(mesh.material, {opacity: 1}, 0);
-
-// Section එක පසු කරන විට මැකී යාම (Optional)
-gsap.to(mesh.material, {
-scrollTrigger: {
-trigger: data.section,
-start: "bottom center",
-end: "bottom top",
-scrub: 1
-},
-opacity: 0
-});
-});
-});
-
-function animate(){
-requestAnimationFrame(animate);
-const time=Date.now()*0.001;
-products.forEach((mesh,i)=>{
-if(mesh){
-mesh.position.y+=Math.sin(time+i)*0.003; // කුඩා floating effect එකක්
-mesh.rotation.y=Math.sin(time*0.5)*0.05;
-}
-});
-renderer.render(scene,camera);
-}
-animate();
-
-window.onload=()=>{
-gsap.to('#loader',{opacity:0,duration:0.8,onComplete:()=>document.getElementById('loader').remove()});
-gsap.to('.hero-title',{opacity:1,y:0,duration:1,delay:0.5});
-};
-
-// Content Boxes Animation
-gsap.utils.toArray('.content-box').forEach(box=>{
-gsap.to(box,{
-scrollTrigger:{
-trigger:box,
-start:"top 85%",
-end:"top 30%",
-scrub:1
-},
-opacity:1,
-x:0
-});
-});
-
-window.addEventListener('resize',()=>{
-camera.aspect=window.innerWidth/window.innerHeight;
-camera.updateProjectionMatrix();
-renderer.setSize(window.innerWidth,window.innerHeight);
-});
-</script>
-
+    function goHome() {
+      const activePage = document.querySelector('.page.active');
+      document.getElementById('landing').style.visibility = 'visible';
+      
+      if (activePage) {
+        activePage.classList.remove('active');
+        setTimeout(() => {
+          activePage.style.display = 'none';
+          // Restore scrolling when returning to home
+          document.body.style.overflow = 'auto';
+        }, 600);
+      }
+      
+      window.scrollTo(0, 0);
+    }
+    
+    // Initial state
+    window.onload = () => {
+        document.body.style.overflow = 'auto';
+    };
+  </script>
 </body>
 </html>
